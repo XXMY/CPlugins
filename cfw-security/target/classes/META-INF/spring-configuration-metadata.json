@@ -1,0 +1,14 @@
+{
+  "groups": [{
+    "name": "movies",
+    "type": "com.cfw.movies.security.properties.SecurityProperties",
+    "sourceType": "com.cfw.movies.security.properties.SecurityProperties"
+  }],
+  "properties": [{
+    "name": "movies.rsa-key-pair-number",
+    "type": "java.lang.Integer",
+    "sourceType": "com.cfw.movies.security.properties.SecurityProperties",
+    "defaultValue": 5
+  }],
+  "hints": []
+}
