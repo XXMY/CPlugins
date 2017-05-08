@@ -26,7 +26,7 @@ public class CRedis {
         stringRedisTemplate.opsForValue().set(key,value);
     }
 
-    public void set(String key,String value,Long timeout){
+    public void set(String key,String value,long timeout){
         this.set(key,value);
         stringRedisTemplate.expire(key,timeout, TimeUnit.SECONDS);
     }
@@ -34,5 +34,17 @@ public class CRedis {
     public void set(String key,String value,Long timeout, TimeUnit unit){
         this.set(key,value);
         stringRedisTemplate.expire(key,timeout,unit);
+    }
+
+    public long incr(String key){
+        return this.stringRedisTemplate.opsForValue().increment(key,1L);
+    }
+
+    public void expire(String key,long timeout){
+        this.expire(key,timeout,TimeUnit.SECONDS);
+    }
+
+    public void expire(String key,long timeout,TimeUnit unit){
+        this.stringRedisTemplate.expire(key,timeout,unit);
     }
 }
