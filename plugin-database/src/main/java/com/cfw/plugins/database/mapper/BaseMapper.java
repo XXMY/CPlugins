@@ -10,16 +10,16 @@ package com.cfw.plugins.database.mapper;
  * @DATE 2015年8月6日 下午3:10:18
  */
 public interface BaseMapper<Template> {
-    public int insertOne(Template t);
-    public int deleteOne(int id);
-    public int updateOne(Template t);
+    int insertOne(Template t);
+    int deleteOne(int id);
+    int updateOne(Template t);
 
     /**
      * Count the records.
      * @author Fangwei_Cai
      * @time since 2016年3月26日 下午4:59:00
      */
-    public int findOne(Template t);
-    public Template selectOne(int id);
+    int findOne(Template t);
+    Template selectOne(int id);
 
 }
