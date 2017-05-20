@@ -3,6 +3,9 @@ package com.cfw.plugins.rmi.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Cfw on 2017/5/14.
  */
@@ -13,9 +16,10 @@ public class CRmiProperties {
     // One project or module only has one unique host and port
     private Integer exporterPort;
 
-    // One project or module may contains several different importer host and port
-    private String importerHost;
-    private String importerPort;
+    // Example: 127.0.0.1:8080/importerService
+    private String [] importerServices;
+
+    private Map<String,String> importerServiceMap;
 
     public Integer getExporterPort() {
         return exporterPort;
@@ -25,23 +29,28 @@ public class CRmiProperties {
         this.exporterPort = exporterPort;
     }
 
-    public String getImporterHost() {
-        return importerHost;
+    public String[] getImporterServices() {
+        return importerServices;
     }
 
-    public void setImporterHost(String importerHost) {
-        this.importerHost = importerHost;
+    public Map<String,String> getImporterServiceMap(){
+        if(this.importerServiceMap != null && this.importerServiceMap.size() > 0)
+            return this.importerServiceMap;
+
+        this.importerServiceMap = new HashMap<String,String>();
+        for (String serviceHostPort : this.importerServices){
+            this.importerServiceMap.put(serviceHostPort.split("/")[1],"rmi://" + serviceHostPort);
+        }
+
+        return this.importerServiceMap;
     }
 
-    public String getImporterPort() {
-        return importerPort;
-    }
+    public void setImporterServices(String[] importerServices) {
+        for(String importerService : importerServices){
+            if(!importerService.matches("^((\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.){3}(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5]):(\\d|[1-9]\\d{1,3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])/[a-zA-Z_\\d]+$"))
+                throw new IllegalArgumentException("Importer service format wrong");
+        }
 
-    public void setImporterPort(String importerPort) {
-        this.importerPort = importerPort;
-    }
-
-    public String getImporterServiceUrl(String serviceName){
-        return "rmi://" + importerHost + ":" + importerPort + "/" + serviceName;
+        this.importerServices = importerServices;
     }
 }

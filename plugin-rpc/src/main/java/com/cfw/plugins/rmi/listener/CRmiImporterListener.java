@@ -2,6 +2,8 @@ package com.cfw.plugins.rmi.listener;
 
 import com.cfw.plugins.rmi.annotation.CRmiImport;
 import com.cfw.plugins.rmi.annotation.CRmiImportService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -10,6 +12,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,6 +26,7 @@ import java.util.Set;
  */
 @Component
 public class CRmiImporterListener extends CRmiListener {
+    private Log logger = LogFactory.getLog(CRmiImporterListener.class);
 
     public CRmiImporterListener(){
         rmiXmlFilePath = "rmi/rmiImporter.xml";
@@ -91,12 +95,19 @@ public class CRmiImporterListener extends CRmiListener {
 
     @Override
     protected boolean appendBean(Class interfaceClass, String serviceName, String filePath) throws IOException {
+        String importerServiceUrl;
+
+        if(StringUtils.isEmpty(importerServiceUrl = properties.getImporterServiceMap().get(serviceName))){
+            this.logger.warn("Service name: " + serviceName + " not found in map of importer services");
+            return false;
+        }
+
         File rmiXmlFile = new File(filePath);
         if(!rmiXmlFile.exists()) return false;
 
         FileWriter fileWriter = new FileWriter(filePath,true);
         fileWriter.append("\t" + "<bean id=\"" + serviceName + "\" " + "class=\"" + RmiProxyFactoryBean.class.getName() + "\">" + System.lineSeparator());
-        fileWriter.append("\t\t" + "<property name=\"serviceUrl\" value=\"" + properties.getImporterServiceUrl(serviceName) +"\"/>" + System.lineSeparator());
+        fileWriter.append("\t\t" + "<property name=\"serviceUrl\" value=\"" + importerServiceUrl +"\"/>" + System.lineSeparator());
         fileWriter.append("\t\t" + "<property name=\"serviceInterface\" value=\"" + interfaceClass.getName() +"\"/>" + System.lineSeparator());
         fileWriter.append("\t" + "</bean>" + System.lineSeparator());
 
