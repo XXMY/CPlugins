@@ -109,6 +109,9 @@ public class CRmiImporterListener extends CRmiListener {
         fileWriter.append("\t" + "<bean id=\"" + serviceName + "\" " + "class=\"" + RmiProxyFactoryBean.class.getName() + "\">" + System.lineSeparator());
         fileWriter.append("\t\t" + "<property name=\"serviceUrl\" value=\"" + importerServiceUrl +"\"/>" + System.lineSeparator());
         fileWriter.append("\t\t" + "<property name=\"serviceInterface\" value=\"" + interfaceClass.getName() +"\"/>" + System.lineSeparator());
+        fileWriter.append("\t\t" + "<property name=\"lookupStubOnStartup\" value=\"" + properties.isImporterLookupStubOnStartup() +"\"/>" + System.lineSeparator());
+        fileWriter.append("\t\t" + "<property name=\"refreshStubOnConnectFailure\" value=\"" + properties.isImporterRefreshStubOnConnectFailure() +"\"/>" + System.lineSeparator());
+
         fileWriter.append("\t" + "</bean>" + System.lineSeparator());
 
         fileWriter.flush();

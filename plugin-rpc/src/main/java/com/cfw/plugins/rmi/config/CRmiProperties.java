@@ -19,6 +19,10 @@ public class CRmiProperties {
     // Example: 127.0.0.1:8080/importerService
     private String [] importerServices;
 
+    // See org.springframework.remoting.rmi.RmiClientInterceptor for details.
+    private boolean importerLookupStubOnStartup = true;
+    private boolean importerRefreshStubOnConnectFailure = false;
+
     private Map<String,String> importerServiceMap;
 
     public Integer getExporterPort() {
@@ -31,6 +35,22 @@ public class CRmiProperties {
 
     public String[] getImporterServices() {
         return importerServices;
+    }
+
+    public boolean isImporterLookupStubOnStartup() {
+        return importerLookupStubOnStartup;
+    }
+
+    public void setImporterLookupStubOnStartup(boolean importerLookupStubOnStartup) {
+        this.importerLookupStubOnStartup = importerLookupStubOnStartup;
+    }
+
+    public boolean isImporterRefreshStubOnConnectFailure() {
+        return importerRefreshStubOnConnectFailure;
+    }
+
+    public void setImporterRefreshStubOnConnectFailure(boolean importerRefreshStubOnConnectFailure) {
+        this.importerRefreshStubOnConnectFailure = importerRefreshStubOnConnectFailure;
     }
 
     public Map<String,String> getImporterServiceMap(){
