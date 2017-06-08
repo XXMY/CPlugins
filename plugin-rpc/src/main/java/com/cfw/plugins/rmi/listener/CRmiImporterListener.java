@@ -10,13 +10,12 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
@@ -28,10 +27,9 @@ import java.util.Set;
 public class CRmiImporterListener extends CRmiListener {
     private Log logger = LogFactory.getLog(CRmiImporterListener.class);
 
-    public CRmiImporterListener(){
-        rmiXmlFilePath = "rmi/rmiImporter.xml";
-        rmiXmlFileRelativePath = "/" + rmiXmlFilePath;
-        rmiXmlFileAbsolutePath = classpath + rmiXmlFilePath;
+    static {
+        rmiXmlFileRelativePath =  "rmi/rmiImporter.xml";
+        rmiXmlFileAbsolutePath = System.getProperty("user.dir") +"/"+ rmiXmlFileRelativePath;
     }
 
     @EventListener
@@ -45,6 +43,8 @@ public class CRmiImporterListener extends CRmiListener {
                 return ;
 
             try{
+
+
                 for(String serviceName : keySet){
                     Object service = servicesMap.get(serviceName);
                     Field [] fields = service.getClass().getDeclaredFields();
@@ -82,15 +82,17 @@ public class CRmiImporterListener extends CRmiListener {
      * Load xml file into Spring IOC container
      *
      * @param xmlFilePath
-     * @param context
+     * @param applicationContext
      * @author CaiFangwei
      * @since 2017-5-14 20:51:49
      */
     @Override
-    protected void loadXml(String xmlFilePath, ApplicationContext applicationContext) {
+    protected void loadXml(String xmlFilePath, ApplicationContext applicationContext) throws IOException {
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry)applicationContext.getAutowireCapableBeanFactory());
         xmlBeanDefinitionReader.setEntityResolver(new ResourceEntityResolver(applicationContext));
-        xmlBeanDefinitionReader.loadBeanDefinitions(xmlFilePath);
+
+        FileSystemResourceLoader loader = new FileSystemResourceLoader();
+        xmlBeanDefinitionReader.loadBeanDefinitions(loader.getResource(xmlFilePath));
     }
 
     @Override

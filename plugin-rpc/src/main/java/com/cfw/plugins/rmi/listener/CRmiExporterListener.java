@@ -22,10 +22,9 @@ import java.util.Set;
 @Component
 public class CRmiExporterListener extends CRmiListener {
 
-    public CRmiExporterListener(){
-        rmiXmlFilePath = "rmi/rmiExporter.xml";
-        rmiXmlFileRelativePath = "/" + rmiXmlFilePath;
-        rmiXmlFileAbsolutePath = classpath + rmiXmlFilePath;
+    static {
+        rmiXmlFileRelativePath = "rmi/rmiExporter.xml";
+        rmiXmlFileAbsolutePath = System.getProperty("user.dir") + "/" + rmiXmlFileRelativePath;
     }
 
     /**
@@ -60,7 +59,7 @@ public class CRmiExporterListener extends CRmiListener {
 
                 if(!first){
                     this.tailXmlFile(rmiXmlFileAbsolutePath);
-                    this.loadXml(rmiXmlFileAbsolutePath,event.getApplicationContext());
+                    this.loadXml(rmiXmlFileRelativePath,event.getApplicationContext());
                 }
 
 

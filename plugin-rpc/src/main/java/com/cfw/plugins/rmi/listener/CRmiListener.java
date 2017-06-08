@@ -1,6 +1,8 @@
 package com.cfw.plugins.rmi.listener;
 
 import com.cfw.plugins.rmi.config.CRmiProperties;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -12,21 +14,15 @@ import java.io.IOException;
  * Created by Cfw on 2017/5/14.
  */
 public abstract class CRmiListener {
+    private static Log logger ;
 
     @Autowired
     protected CRmiProperties properties;
 
     protected boolean first = true;
 
-    protected static String classpath;
-
-    protected String rmiXmlFilePath;
-    protected String rmiXmlFileAbsolutePath;
-    protected String rmiXmlFileRelativePath;
-
-    static {
-        classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-    }
+    protected static String rmiXmlFileAbsolutePath;
+    protected static String rmiXmlFileRelativePath;
 
     /**
      * Load xml file into Spring IOC container
@@ -36,7 +32,7 @@ public abstract class CRmiListener {
      * @author CaiFangwei
      * @since 2017-5-14 20:51:49
      */
-    protected abstract void loadXml(String xmlFilePath, ApplicationContext context) ;
+    protected abstract void loadXml(String xmlFilePath, ApplicationContext context) throws IOException;
 
     protected final boolean createRmiXmlTemplateFile() throws IOException {
         File rmiXmlFolder = new File(rmiXmlFileAbsolutePath);
