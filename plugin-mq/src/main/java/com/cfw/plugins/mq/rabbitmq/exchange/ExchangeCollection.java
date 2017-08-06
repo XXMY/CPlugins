@@ -8,6 +8,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
+ * Exchange collection contains all defined exchanges on the same JVM.<br/>
+ * Sometimes may share exchanges between different type senders, using<br/>
+ * a collection helps a lot.
+ *
  * Created by Duskrain on 2017/8/2.
  */
 public class ExchangeCollection {

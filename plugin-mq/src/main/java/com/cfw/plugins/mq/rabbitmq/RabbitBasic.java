@@ -1,13 +1,12 @@
 package com.cfw.plugins.mq.rabbitmq;
 
-import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeBasic;
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeCollection;
 import org.springframework.amqp.core.*;
 import org.springframework.util.StringUtils;
 
-import java.util.Map;
-
 /**
+ * Basic attributes and relations in RabbitMQ
+ * <p/>
  * Reference:
  * https://github.com/rabbitmq/rabbitmq-tutorials/tree/master/spring-amqp/src/main/java/org/springframework/amqp/tutorials
  * <p/>
@@ -19,13 +18,14 @@ public abstract class RabbitBasic {
 
     private AbstractExchange exchange;
 
+    // The relationship between exchange and queue.
     private Binding binding;
 
     // One producer may only produce message through one certain routing key
     // and one consumer only consume message through one certain routing key.
     private String routingKey = "";
 
-    public RabbitBasic(){}
+    protected RabbitBasic(){}
 
     public RabbitBasic(String exchangeType,String exchangeName,String routingKey){
         this.initExchange(exchangeType,exchangeName);
@@ -36,15 +36,15 @@ public abstract class RabbitBasic {
         this.exchange = ExchangeCollection.getExchange(exchangeType,exchangeName,true);
     }
 
-    public Queue getQueue() {
+    protected Queue getQueue() {
         return queue;
     }
 
-    public void setQueue(Queue queue) {
+    protected void setQueue(Queue queue) {
         this.queue = queue;
     }
 
-    public AbstractExchange getExchange() {
+    protected AbstractExchange getExchange() {
         return exchange;
     }
 
@@ -56,15 +56,15 @@ public abstract class RabbitBasic {
         return binding;
     }
 
-    public void setBinding(Binding binding) {
+    protected void setBinding(Binding binding) {
         this.binding = binding;
     }
 
-    public String getRoutingKey() {
+    protected String getRoutingKey() {
         return routingKey;
     }
 
-    public void setRoutingKey(String routingKey) {
+    private void setRoutingKey(String routingKey) {
         if(!StringUtils.isEmpty(routingKey))
             this.routingKey = routingKey;
     }

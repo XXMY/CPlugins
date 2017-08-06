@@ -6,23 +6,25 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.util.StringUtils;
 
 /**
+ *
+ *
  * Created by Duskrain on 2017/7/31.
  */
-public abstract class AbstractSender extends RabbitBasic implements Sender{
+abstract class AbstractSender extends RabbitBasic implements Sender{
 
     private RabbitTemplate rabbitTemplate;
 
-    public AbstractSender(String queueName, RabbitTemplate rabbitTemplate) {
+    AbstractSender(String queueName, RabbitTemplate rabbitTemplate) {
         this.initQueue(queueName);
         this.rabbitTemplate = rabbitTemplate;
 
     }
 
-    public AbstractSender(String exchangeType,String exchangeName,String routingKey){
+    AbstractSender(String exchangeType,String exchangeName,String routingKey){
         super(exchangeType,exchangeName,routingKey);
     }
 
-    public RabbitTemplate getRabbitTemplate() {
+    RabbitTemplate getRabbitTemplate() {
         return rabbitTemplate;
     }
 

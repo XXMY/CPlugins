@@ -8,6 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Binding collection contains all defined bindings on the same JVM.<p></p>
+ * It provides an convenient way to initialize bindings of exchange and queue.<br/>
+ * An exchange may routing messages to one or several queues with same routing key or
+ * different routing keys. The BindingCollection can deal this by passing formatted
+ * string like exchangeType/exchangeName/queueName/routingKeys to RabbitConfigurationProperties
+ * class. This can be finished through Spring Boot's application.properties file.
+ *<p></p>
  * Created by Duskrain on 2017/8/2.
  */
 public class BindingCollection {

@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Queue collection contains all defined queues on the same JVM.<br/>
+ * Sometimes may share queues between different type senders, using<br/>
+ * a collection helps a lot.
+ *
  * Created by Duskrain on 2017/7/31.
  */
 public class QueueCollection {

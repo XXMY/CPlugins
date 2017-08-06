@@ -5,23 +5,25 @@ import org.springframework.amqp.core.*;
 import java.util.Map;
 
 /**
+ * The basic of exchanges, used to create new exchange.
+ *
  * Created by Duskrain on 2017/7/31.
  */
-public class ExchangeBasic {
+class ExchangeBasic {
 
-    public static AbstractExchange getExchange(String type, String name){
+    static AbstractExchange getExchange(String type, String name){
         return ExchangeBasic.getExchange(type,name,false,false,null);
     }
 
-    public static AbstractExchange getExchange(String type, String name,boolean durable){
+    static AbstractExchange getExchange(String type, String name,boolean durable){
         return ExchangeBasic.getExchange(type,name,durable,false,null);
     }
 
-    public static AbstractExchange getExchange(String type, String name,boolean durable,boolean autoDelete){
+    static AbstractExchange getExchange(String type, String name,boolean durable,boolean autoDelete){
         return ExchangeBasic.getExchange(type,name,durable,autoDelete,null);
     }
 
-    public static AbstractExchange getExchange(String type,String name,boolean durable,boolean autoDelete,Map<String, Object> arguments){
+    static AbstractExchange getExchange(String type,String name,boolean durable,boolean autoDelete,Map<String, Object> arguments){
         switch(type){
             case ExchangeTypes.DIRECT:
                 return new DirectExchange(name,durable,autoDelete,arguments);
