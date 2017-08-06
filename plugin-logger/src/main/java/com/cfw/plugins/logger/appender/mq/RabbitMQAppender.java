@@ -17,6 +17,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
+ * <p>Self defined appender, can send logger messages to RabbitMQ.</p>
+ *
  * Created by Duskrain on 2017/8/3.
  */
 @Plugin(name = "RabbitMQ", category = "Core", elementType = "appender", printObject = true)
