@@ -2,8 +2,6 @@ package com.cfw.plugins.rmi.listener;
 
 import com.cfw.plugins.rmi.annotation.CRmiImport;
 import com.cfw.plugins.rmi.annotation.CRmiImportService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -25,7 +23,7 @@ import java.util.Set;
  */
 @Component
 public class CRmiImporterListener extends CRmiListener {
-    private Log logger = LogFactory.getLog(CRmiImporterListener.class);
+    //private Log logger = LogFactory.getLog(CRmiImporterListener.class);
 
     static {
         rmiXmlFileRelativePath =  "rmi/rmiImporter.xml";
@@ -98,7 +96,7 @@ public class CRmiImporterListener extends CRmiListener {
         String importerServiceUrl;
 
         if(StringUtils.isEmpty(importerServiceUrl = properties.getImporterServiceMap().get(serviceName))){
-            this.logger.warn("Service name: " + serviceName + " not found in map of importer services");
+            //this.logger.warn("Service name: " + serviceName + " not found in map of importer services");
             return false;
         }
 
