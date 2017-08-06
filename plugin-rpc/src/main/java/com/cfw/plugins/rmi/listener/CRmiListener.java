@@ -1,8 +1,6 @@
 package com.cfw.plugins.rmi.listener;
 
 import com.cfw.plugins.rmi.config.CRmiProperties;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -14,7 +12,6 @@ import java.io.IOException;
  * Created by Cfw on 2017/5/14.
  */
 public abstract class CRmiListener {
-    private static Log logger ;
 
     @Autowired
     protected CRmiProperties properties;
