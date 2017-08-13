@@ -1,12 +1,12 @@
 package com.cfw.plugins.mq.rabbitmq;
 
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeCollection;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AbstractExchange;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Queue;
 import org.springframework.util.StringUtils;
 
 /**
- * Basic attributes and relations in RabbitMQ
- * <p/>
  * Reference:
  * https://github.com/rabbitmq/rabbitmq-tutorials/tree/master/spring-amqp/src/main/java/org/springframework/amqp/tutorials
  * <p/>
@@ -18,14 +18,13 @@ public abstract class RabbitBasic {
 
     private AbstractExchange exchange;
 
-    // The relationship between exchange and queue.
     private Binding binding;
 
     // One producer may only produce message through one certain routing key
     // and one consumer only consume message through one certain routing key.
     private String routingKey = "";
 
-    protected RabbitBasic(){}
+    public RabbitBasic(){}
 
     public RabbitBasic(String exchangeType,String exchangeName,String routingKey){
         this.initExchange(exchangeType,exchangeName);
@@ -33,18 +32,18 @@ public abstract class RabbitBasic {
     }
 
     private void initExchange(String exchangeType,String exchangeName){
-        this.exchange = ExchangeCollection.getExchange(exchangeType,exchangeName,true);
+        this.exchange = ExchangeCollection.getExchange(exchangeType,exchangeName);
     }
 
-    protected Queue getQueue() {
+    public Queue getQueue() {
         return queue;
     }
 
-    protected void setQueue(Queue queue) {
+    public void setQueue(Queue queue) {
         this.queue = queue;
     }
 
-    protected AbstractExchange getExchange() {
+    public AbstractExchange getExchange() {
         return exchange;
     }
 
@@ -56,15 +55,15 @@ public abstract class RabbitBasic {
         return binding;
     }
 
-    protected void setBinding(Binding binding) {
+    public void setBinding(Binding binding) {
         this.binding = binding;
     }
 
-    protected String getRoutingKey() {
+    public String getRoutingKey() {
         return routingKey;
     }
 
-    private void setRoutingKey(String routingKey) {
+    public void setRoutingKey(String routingKey) {
         if(!StringUtils.isEmpty(routingKey))
             this.routingKey = routingKey;
     }

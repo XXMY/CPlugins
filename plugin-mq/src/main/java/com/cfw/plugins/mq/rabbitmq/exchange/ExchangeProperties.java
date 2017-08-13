@@ -3,8 +3,6 @@ package com.cfw.plugins.mq.rabbitmq.exchange;
 import java.util.Map;
 
 /**
- * Basic attributes of exchange.
- *
  * Created by Duskrain on 2017/8/2.
  */
 public class ExchangeProperties {
