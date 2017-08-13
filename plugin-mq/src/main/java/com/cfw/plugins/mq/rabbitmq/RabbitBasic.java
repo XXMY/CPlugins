@@ -1,11 +1,10 @@
 package com.cfw.plugins.mq.rabbitmq;
 
-import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeBasic;
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeCollection;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AbstractExchange;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Queue;
 import org.springframework.util.StringUtils;
-
-import java.util.Map;
 
 /**
  * Reference:
@@ -33,7 +32,7 @@ public abstract class RabbitBasic {
     }
 
     private void initExchange(String exchangeType,String exchangeName){
-        this.exchange = ExchangeCollection.getExchange(exchangeType,exchangeName,true);
+        this.exchange = ExchangeCollection.getExchange(exchangeType,exchangeName);
     }
 
     public Queue getQueue() {
