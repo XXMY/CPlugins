@@ -33,6 +33,7 @@ public abstract class RabbitBasic {
 
     private void initExchange(String exchangeType,String exchangeName){
         this.exchange = ExchangeCollection.getExchange(exchangeType,exchangeName);
+
     }
 
     public Queue getQueue() {

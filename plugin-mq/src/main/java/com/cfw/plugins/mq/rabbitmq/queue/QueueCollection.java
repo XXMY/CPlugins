@@ -17,18 +17,22 @@ public class QueueCollection {
     private static Map<String,Queue> queues = new HashMap<>();
 
     public static Queue getQueue(String queueName){
-        return queues.get(queueName);
+        if(queues.containsKey(queueName))
+            return queues.get(queueName);
+        else{
+            Queue queue = new Queue(queueName);
+            queues.put(queueName,queue);
+            return queue;
+        }
     }
 
-    public static void addQueue(String queueName, Channel channel) throws IOException {
+    public static void addQueue(String queueName) throws IOException {
         Queue queue = null;
         if(StringUtils.isEmpty(queueName)){
             queue = new AnonymousQueue();
-            channel.queueDeclare(queue.getName(),false,false,true,null);
         }
         else{
             queue = new Queue(queueName);
-            channel.queueDeclare(queue.getName(),false,false,false,null);
         }
 
         queues.put(queue.getName(),queue);

@@ -7,7 +7,6 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Created by Duskrain on 2017/8/2.
@@ -27,14 +26,21 @@ public class ExchangeCollection {
         return exchangeMap.get(exchangeName);
     }
 
+    public static void addExchange(AbstractExchange exchange){
+        Map<String,AbstractExchange> exchangeMap = exchanges.get(exchange.getType());
+        exchangeMap.put(exchange.getName(),exchange);
+    }
+
     public static void addExchange(String exchangeType,String exchangeName, Channel channel) throws IOException {
         if(StringUtils.isEmpty(exchangeType) || StringUtils.isEmpty(exchangeName))
             return ;
 
         Map<String,AbstractExchange> exchangeMap = exchanges.get(exchangeType);
-        if(exchangeMap == null)
+        if(exchangeMap == null) {
             exchangeMap = new HashMap<>();
+            exchanges.put(exchangeType,exchangeMap);
+        }
 
-        exchangeMap.put(exchangeName,ExchangeBasic.addExchange(exchangeType,exchangeName,channel));
+        exchangeMap.put(exchangeName, ExchangeInitializer.initializeExchange(exchangeType,exchangeName,channel));
     }
 }
