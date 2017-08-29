@@ -9,21 +9,23 @@ import java.util.Map;
 /**
  * Created by Duskrain on 2017/7/31.
  */
-public class ExchangeBasic {
+public class ExchangeInitializer {
 
-    public static AbstractExchange addExchange(String type, String name, Channel channel) throws IOException {
-        return ExchangeBasic.addExchange(type,name,false,false,null);
+    public static void initializeExchange(){}
+
+    public static AbstractExchange initializeExchange(String type, String name, Channel channel) throws IOException {
+        return ExchangeInitializer.initializeExchange(type,name,false,false,channel);
     }
 
-    public static AbstractExchange addExchange(String type, String name,boolean durable, Channel channel) throws IOException {
-        return ExchangeBasic.addExchange(type,name,durable,false,null);
+    public static AbstractExchange initializeExchange(String type, String name, boolean durable, Channel channel) throws IOException {
+        return ExchangeInitializer.initializeExchange(type,name,durable,false,channel);
     }
 
-    public static AbstractExchange addExchange(String type, String name,boolean durable,boolean autoDelete, Channel channel) throws IOException {
-        return ExchangeBasic.addExchange(type,name,durable,autoDelete,null,channel);
+    public static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Channel channel) throws IOException {
+        return ExchangeInitializer.initializeExchange(type,name,durable,autoDelete,null,channel);
     }
 
-    public static AbstractExchange addExchange(String type,String name,boolean durable,boolean autoDelete,Map<String, Object> arguments, Channel channel) throws IOException {
+    public static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Map<String, Object> arguments, Channel channel) throws IOException {
         switch(type){
             case ExchangeTypes.DIRECT:
                 channel.exchangeDeclare(name,ExchangeTypes.DIRECT,durable,autoDelete,arguments);

@@ -7,7 +7,6 @@ import com.rabbitmq.client.Channel;
 import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +18,13 @@ import java.util.concurrent.TimeoutException;
  * Created by Duskrain on 2017/8/1.
  */
 @Component
-@ConfigurationProperties(prefix = "CRabbitMQ")
+@ConfigurationProperties(prefix = "c.rabbitmq")
 public class RabbitConfigurationProperties {
 
+    private String rabbitConfigurationXmlPath;
+
     // exchangeType/exchangeName/queueName/routingKeys
-    private static List<String> bindingRelations;
+    private List<String> bindingRelations;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -33,8 +34,7 @@ public class RabbitConfigurationProperties {
     }
 
     public void setBindingRelations(List<String> bindingRelations) throws IOException {
-        RabbitConfigurationProperties.bindingRelations = bindingRelations;
-
+        this.bindingRelations = bindingRelations;
         this.initBindingRelations();
     }
 
@@ -43,7 +43,7 @@ public class RabbitConfigurationProperties {
         Channel channel = connection.createChannel(false);
 
         try{
-            for(String bindingRelation : RabbitConfigurationProperties.bindingRelations){
+            for(String bindingRelation : bindingRelations){
                 String [] relationArray = bindingRelation.split("/",4);
                 if(relationArray.length != 4) continue;
 
@@ -59,7 +59,6 @@ public class RabbitConfigurationProperties {
                 for(String routingKey : routingKeyArray){
                     BindingCollection.addBinding(exchangeType,exchangeName,queueName,routingKey,channel);
                 }
-
             }
         }catch (Exception e ){
             e.printStackTrace();
@@ -73,5 +72,13 @@ public class RabbitConfigurationProperties {
             }
             if(connection != null ) connection.close();
         }
+    }
+
+    public String getRabbitConfigurationXmlPath() {
+        return rabbitConfigurationXmlPath;
+    }
+
+    public void setRabbitConfigurationXmlPath(String rabbitConfigurationXmlPath) {
+        this.rabbitConfigurationXmlPath = rabbitConfigurationXmlPath;
     }
 }

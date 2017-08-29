@@ -18,8 +18,9 @@ public abstract class AbstractSender extends RabbitBasic implements Sender{
 
     }
 
-    public AbstractSender(String exchangeType,String exchangeName,String routingKey){
+    public AbstractSender(String exchangeType,String exchangeName,String routingKey,RabbitTemplate rabbitTemplate){
         super(exchangeType,exchangeName,routingKey);
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public RabbitTemplate getRabbitTemplate() {
@@ -30,5 +31,11 @@ public abstract class AbstractSender extends RabbitBasic implements Sender{
         if(!StringUtils.isEmpty(queueName))
             this.setQueue(QueueCollection.getQueue(queueName));
     }
+
+    public void send(String message){}
+
+    public void send(byte [] bytes){}
+
+    public void send(Object object){}
 
 }
