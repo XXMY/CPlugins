@@ -26,7 +26,7 @@ public class RabbitConfigurationProperties {
     // exchangeType/exchangeName/queueName/routingKeys
     private List<String> bindingRelations;
 
-    @Autowired
+    //@Autowired
     private RabbitTemplate rabbitTemplate;
 
     public List<String> getBindingRelations() {
@@ -35,8 +35,9 @@ public class RabbitConfigurationProperties {
 
     public void setBindingRelations(List<String> bindingRelations) throws IOException {
         this.bindingRelations = bindingRelations;
-        this.initBindingRelations();
+        //this.initBindingRelations();
     }
+/*
 
     private void initBindingRelations() throws IOException {
         Connection connection = this.rabbitTemplate.getConnectionFactory().createConnection();
@@ -53,7 +54,7 @@ public class RabbitConfigurationProperties {
                 String routingKeys = relationArray[3];
 
                 ExchangeCollection.addExchange(exchangeType,exchangeName,channel);
-                QueueCollection.addQueue(queueName,channel);
+                //QueueCollection.addQueue(queueName,channel);
 
                 String [] routingKeyArray = routingKeys.split(",");
                 for(String routingKey : routingKeyArray){
@@ -73,6 +74,7 @@ public class RabbitConfigurationProperties {
             if(connection != null ) connection.close();
         }
     }
+*/
 
     public String getRabbitConfigurationXmlPath() {
         return rabbitConfigurationXmlPath;

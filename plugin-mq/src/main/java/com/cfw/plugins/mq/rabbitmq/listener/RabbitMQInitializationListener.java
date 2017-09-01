@@ -10,6 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by Duskrain on 2017/8/28.
@@ -17,9 +18,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitMQInitializationListener {
 
-    @EventListener
     @Autowired
-    public void initialize(ContextRefreshedEvent event, RabbitConfigurationProperties configurationProperties){
+    private RabbitConfigurationProperties configurationProperties;
+
+    @EventListener
+    public void initialize(ContextRefreshedEvent event){
+        if(StringUtils.isEmpty(configurationProperties.getRabbitConfigurationXmlPath()))
+            return ;
+
         try{
             ApplicationContext applicationContext = event.getApplicationContext();
             XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry)applicationContext.getAutowireCapableBeanFactory());

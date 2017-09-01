@@ -11,7 +11,9 @@ import java.util.Map;
  */
 public class ExchangeInitializer {
 
-    public static void initializeExchange(){}
+    public static void initializeExchange(AbstractExchange exchange,Channel channel) throws IOException {
+        ExchangeInitializer.initializeExchange(exchange.getType(),exchange.getName(),exchange.isDurable(),exchange.isAutoDelete(),exchange.getArguments(),channel);
+    }
 
     public static AbstractExchange initializeExchange(String type, String name, Channel channel) throws IOException {
         return ExchangeInitializer.initializeExchange(type,name,false,false,channel);
