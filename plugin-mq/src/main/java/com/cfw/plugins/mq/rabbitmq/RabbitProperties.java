@@ -18,9 +18,9 @@ public class RabbitProperties {
 
     private AbstractExchange exchange;
 
-    private List<Queue> queue;
+    private List<Queue> queues;
 
-    private List<Binding> binding;
+    private List<Binding> bindings;
 
     private Usage usage;
 
@@ -32,24 +32,20 @@ public class RabbitProperties {
         this.exchange = exchange;
     }
 
-    public void setExchange(CExchange exchange) {
-        this.exchange = exchange;
+    public List<Queue> getQueues() {
+        return queues;
     }
 
-    public List<Queue> getQueue() {
-        return queue;
+    public void setQueues(List<Queue> queues) {
+        this.queues = queues;
     }
 
-    public void setQueue(List<Queue> queue) {
-        this.queue = queue;
+    public List<Binding> getBindings() {
+        return bindings;
     }
 
-    public List<Binding> getBinding() {
-        return binding;
-    }
-
-    public void setBinding(List<Binding> binding) {
-        this.binding = binding;
+    public void setBindings(List<Binding> bindings) {
+        this.bindings = bindings;
     }
 
     public Usage getUsage() {
@@ -64,8 +60,8 @@ public class RabbitProperties {
     public String toString() {
         return "RabbitProperties{" +
                 "exchange=" + exchange +
-                ", queue=" + queue +
-                ", binding=" + binding +
+                ", queues=" + queues +
+                ", bindings=" + bindings +
                 ", usage=" + usage +
                 '}';
     }
