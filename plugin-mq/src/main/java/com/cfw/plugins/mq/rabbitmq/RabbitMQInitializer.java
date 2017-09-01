@@ -3,11 +3,14 @@ package com.cfw.plugins.mq.rabbitmq;
 import com.cfw.plugins.mq.rabbitmq.binding.BindingInitializer;
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeInitializer;
 import com.cfw.plugins.mq.rabbitmq.queue.QueueInitializer;
+import com.cfw.plugins.mq.rabbitmq.rpc.dispatch.InboundDispatcher;
+import com.cfw.plugins.thread.ThreadProperties;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,11 +21,15 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitMQInitializer {
 
+    @Autowired
+    private ThreadProperties threadProperties;
+
     private List<RabbitProperties> rabbitPropertiesList;
 
     public RabbitMQInitializer(RabbitTemplate rabbitTemplate, List<RabbitProperties> rabbitPropertiesList) throws IOException {
         this.rabbitPropertiesList = rabbitPropertiesList;
         this.initialize(rabbitTemplate);
+        InboundDispatcher.staticStartup(rabbitTemplate,threadProperties.getInboundDispatcherThreadsNumber());
     }
 
     public List<RabbitProperties> getRabbitPropertiesList() {
