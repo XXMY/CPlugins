@@ -27,7 +27,15 @@ public class ExchangeCollection {
     }
 
     public static void addExchange(AbstractExchange exchange){
+        if(exchange == null)
+            return ;
+
         Map<String,AbstractExchange> exchangeMap = exchanges.get(exchange.getType());
+        if(exchangeMap == null) {
+            exchangeMap = new HashMap<>();
+            exchanges.put(exchange.getType(),exchangeMap);
+        }
+
         exchangeMap.put(exchange.getName(),exchange);
     }
 

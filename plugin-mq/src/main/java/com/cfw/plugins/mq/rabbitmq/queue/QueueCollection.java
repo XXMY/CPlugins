@@ -1,6 +1,5 @@
 package com.cfw.plugins.mq.rabbitmq.queue;
 
-import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Queue;
 import org.springframework.util.StringUtils;
@@ -19,22 +18,19 @@ public class QueueCollection {
     public static Queue getQueue(String queueName){
         if(queues.containsKey(queueName))
             return queues.get(queueName);
-        else{
-            Queue queue = new Queue(queueName);
-            queues.put(queueName,queue);
-            return queue;
-        }
+
+        return null;
     }
 
-    public static void addQueue(String queueName) throws IOException {
-        Queue queue = null;
-        if(StringUtils.isEmpty(queueName)){
-            queue = new AnonymousQueue();
-        }
-        else{
-            queue = new Queue(queueName);
-        }
+    public static void addQueue() {
+        Queue queue = new AnonymousQueue();
 
+        queues.put(queue.getName(),queue);
+    }
+
+    public static void addQueue(Queue queue){
+        if(queue == null)
+            return ;
         queues.put(queue.getName(),queue);
     }
 }

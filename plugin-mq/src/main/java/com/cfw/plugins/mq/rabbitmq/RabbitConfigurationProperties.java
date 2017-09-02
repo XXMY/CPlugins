@@ -1,80 +1,53 @@
 package com.cfw.plugins.mq.rabbitmq;
 
-import com.cfw.plugins.mq.rabbitmq.binding.BindingCollection;
-import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeCollection;
-import com.cfw.plugins.mq.rabbitmq.queue.QueueCollection;
-import com.rabbitmq.client.Channel;
-import org.springframework.amqp.rabbit.connection.Connection;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
+import java.util.Map;
 
 /**
  * Created by Duskrain on 2017/8/1.
  */
-@Component
+@Component("rabbitConfigurationProperties")
 @ConfigurationProperties(prefix = "c.rabbitmq")
 public class RabbitConfigurationProperties {
 
     private String rabbitConfigurationXmlPath;
 
-    // exchangeType/exchangeName/queueName/routingKeys
-    private List<String> bindingRelations;
+    // MQ queue message listener's thread number
+    private Map<String,Integer> mqQueueThreadsNumber;
+    private Map<String,Integer> InboundDispatcherThreadsNumber;
+    private Map<String,Integer> OutboundDispatcherThreadsNumber;
 
-    //@Autowired
-    private RabbitTemplate rabbitTemplate;
+    private List<String> logQueueName;
 
-    public List<String> getBindingRelations() {
-        return bindingRelations;
+    private boolean rpcClient;
+    private boolean rpcServer;
+
+    public Map<String, Integer> getMqQueueThreadsNumber() {
+        return mqQueueThreadsNumber;
     }
 
-    public void setBindingRelations(List<String> bindingRelations) throws IOException {
-        this.bindingRelations = bindingRelations;
-        //this.initBindingRelations();
+    public void setMqQueueThreadsNumber(Map<String, Integer> mqQueueThreadsNumber) {
+        this.mqQueueThreadsNumber = mqQueueThreadsNumber;
     }
-/*
 
-    private void initBindingRelations() throws IOException {
-        Connection connection = this.rabbitTemplate.getConnectionFactory().createConnection();
-        Channel channel = connection.createChannel(false);
-
-        try{
-            for(String bindingRelation : bindingRelations){
-                String [] relationArray = bindingRelation.split("/",4);
-                if(relationArray.length != 4) continue;
-
-                String exchangeType = relationArray[0];
-                String exchangeName = relationArray[1];
-                String queueName = relationArray[2];
-                String routingKeys = relationArray[3];
-
-                ExchangeCollection.addExchange(exchangeType,exchangeName,channel);
-                //QueueCollection.addQueue(queueName,channel);
-
-                String [] routingKeyArray = routingKeys.split(",");
-                for(String routingKey : routingKeyArray){
-                    BindingCollection.addBinding(exchangeType,exchangeName,queueName,routingKey,channel);
-                }
-            }
-        }catch (Exception e ){
-            e.printStackTrace();
-        }finally {
-            try {
-                if(channel != null) channel.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                e.printStackTrace();
-            }
-            if(connection != null ) connection.close();
-        }
+    public Map<String, Integer> getInboundDispatcherThreadsNumber() {
+        return InboundDispatcherThreadsNumber;
     }
-*/
+
+    public void setInboundDispatcherThreadsNumber(Map<String, Integer> inboundDispatcherThreadsNumber) {
+        InboundDispatcherThreadsNumber = inboundDispatcherThreadsNumber;
+    }
+
+    public Map<String, Integer> getOutboundDispatcherThreadsNumber() {
+        return OutboundDispatcherThreadsNumber;
+    }
+
+    public void setOutboundDispatcherThreadsNumber(Map<String, Integer> outboundDispatcherThreadsNumber) {
+        OutboundDispatcherThreadsNumber = outboundDispatcherThreadsNumber;
+    }
 
     public String getRabbitConfigurationXmlPath() {
         return rabbitConfigurationXmlPath;
@@ -82,5 +55,29 @@ public class RabbitConfigurationProperties {
 
     public void setRabbitConfigurationXmlPath(String rabbitConfigurationXmlPath) {
         this.rabbitConfigurationXmlPath = rabbitConfigurationXmlPath;
+    }
+
+    public boolean isRpcClient() {
+        return rpcClient;
+    }
+
+    public void setRpcClient(boolean rpcClient) {
+        this.rpcClient = rpcClient;
+    }
+
+    public boolean isRpcServer() {
+        return rpcServer;
+    }
+
+    public void setRpcServer(boolean rpcServer) {
+        this.rpcServer = rpcServer;
+    }
+
+    public List<String> getLogQueueName() {
+        return logQueueName;
+    }
+
+    public void setLogQueueName(List<String> logQueueName) {
+        this.logQueueName = logQueueName;
     }
 }

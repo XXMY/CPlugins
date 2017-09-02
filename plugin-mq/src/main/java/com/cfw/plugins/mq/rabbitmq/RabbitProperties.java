@@ -1,6 +1,6 @@
 package com.cfw.plugins.mq.rabbitmq;
 
-import com.cfw.plugins.mq.rabbitmq.exchange.CExchange;
+import com.cfw.plugins.mq.rabbitmq.binding.CBinding;
 import org.springframework.amqp.core.AbstractExchange;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
@@ -20,7 +20,7 @@ public class RabbitProperties {
 
     private List<Queue> queues;
 
-    private List<Binding> bindings;
+    private List<CBinding> bindings;
 
     private Usage usage;
 
@@ -40,11 +40,11 @@ public class RabbitProperties {
         this.queues = queues;
     }
 
-    public List<Binding> getBindings() {
+    public List<CBinding> getBindings() {
         return bindings;
     }
 
-    public void setBindings(List<Binding> bindings) {
+    public void setBindings(List<CBinding> bindings) {
         this.bindings = bindings;
     }
 

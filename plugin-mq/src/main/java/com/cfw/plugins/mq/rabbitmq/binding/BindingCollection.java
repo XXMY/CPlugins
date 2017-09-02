@@ -1,7 +1,7 @@
 package com.cfw.plugins.mq.rabbitmq.binding;
 
 import com.rabbitmq.client.Channel;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;

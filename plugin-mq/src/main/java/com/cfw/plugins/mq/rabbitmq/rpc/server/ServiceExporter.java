@@ -1,10 +1,7 @@
-package com.cfw.plugins.mq.rabbitmq.rpc;
+package com.cfw.plugins.mq.rabbitmq.rpc.server;
 
-import com.cfw.plugins.mq.rabbitmq.rpc.annotation.CRpcService;
-import com.cfw.plugins.mq.rabbitmq.rpc.dispatch.Selector;
-import com.cfw.plugins.thread.ThreadProperties;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cfw.plugins.mq.rabbitmq.rpc.server.annotation.CRpcService;
+import com.cfw.plugins.mq.rabbitmq.rpc.server.dispatch.Selector ;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

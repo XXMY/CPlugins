@@ -1,10 +1,9 @@
-package com.cfw.plugins.mq.rabbitmq.rpc.dispatch;
+package com.cfw.plugins.mq.rabbitmq.rpc.server.dispatch;
 
 import com.cfw.plugins.mq.rabbitmq.rpc.RemoteProcedureRequest;
 import com.cfw.plugins.mq.rabbitmq.rpc.RemoteProcedureResponse;
-import com.cfw.plugins.mq.rabbitmq.rpc.handle.RequestHandler;
+import com.cfw.plugins.mq.rabbitmq.rpc.server.handle.RequestHandler;
 import com.cfw.plugins.thread.AbstractThread;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.ReceiveAndReplyCallback;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 

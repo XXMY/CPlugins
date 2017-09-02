@@ -11,6 +11,9 @@ import java.io.IOException;
 public class BindingInitializer {
 
     public static void initializeBinding(Binding binding, Channel channel) throws IOException {
+        if(binding == null || channel == null)
+            return;
+
         switch (binding.getDestinationType()){
             case QUEUE:
                 channel.queueBind(binding.getDestination(),binding.getExchange(),binding.getRoutingKey(),binding.getArguments());

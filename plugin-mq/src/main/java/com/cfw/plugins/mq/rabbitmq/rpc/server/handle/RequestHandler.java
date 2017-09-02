@@ -1,12 +1,11 @@
-package com.cfw.plugins.mq.rabbitmq.rpc.handle;
+package com.cfw.plugins.mq.rabbitmq.rpc.server.handle;
 
 import com.cfw.plugins.mq.rabbitmq.rpc.RemoteProcedureRequest;
 import com.cfw.plugins.mq.rabbitmq.rpc.RemoteProcedureResponse;
-import com.cfw.plugins.mq.rabbitmq.rpc.dispatch.Selector;
+import com.cfw.plugins.mq.rabbitmq.rpc.server.dispatch.Selector;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * Created by Duskrain on 2017/8/27.

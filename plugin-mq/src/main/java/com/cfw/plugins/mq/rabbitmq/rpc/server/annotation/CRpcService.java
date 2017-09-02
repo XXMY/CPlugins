@@ -1,4 +1,4 @@
-package com.cfw.plugins.mq.rabbitmq.rpc.annotation;
+package com.cfw.plugins.mq.rabbitmq.rpc.server.annotation;
 
 /**
  * Created by Duskrain on 2017/8/27.

@@ -1,4 +1,4 @@
-package com.cfw.plugins.mq.rabbitmq.rpc.dispatch;
+package com.cfw.plugins.mq.rabbitmq.rpc.server.dispatch;
 
 import org.springframework.util.StringUtils;
 

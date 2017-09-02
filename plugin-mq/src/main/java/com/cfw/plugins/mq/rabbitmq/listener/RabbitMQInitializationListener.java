@@ -1,6 +1,7 @@
 package com.cfw.plugins.mq.rabbitmq.listener;
 
 import com.cfw.plugins.mq.rabbitmq.RabbitConfigurationProperties;
+import com.cfw.plugins.mq.rabbitmq.RabbitMQInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.xml.ResourceEntityResolver;
@@ -15,13 +16,14 @@ import org.springframework.util.StringUtils;
 /**
  * Created by Duskrain on 2017/8/28.
  */
-@Component
+//@Component
+@Deprecated
 public class RabbitMQInitializationListener {
 
     @Autowired
     private RabbitConfigurationProperties configurationProperties;
 
-    @EventListener
+    //@EventListener
     public void initialize(ContextRefreshedEvent event){
         if(StringUtils.isEmpty(configurationProperties.getRabbitConfigurationXmlPath()))
             return ;
@@ -33,6 +35,9 @@ public class RabbitMQInitializationListener {
 
             FileSystemResourceLoader loader = new FileSystemResourceLoader();
             xmlBeanDefinitionReader.loadBeanDefinitions(loader.getResource(configurationProperties.getRabbitConfigurationXmlPath()));
+
+            RabbitMQInitializer rabbitMQInitializer = (RabbitMQInitializer) applicationContext.getBean("rabbitMqInitializer");
+            rabbitMQInitializer.initialize();
         }catch (Exception e){
             e.printStackTrace();
         }

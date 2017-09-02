@@ -12,22 +12,23 @@ import java.util.Map;
 public class ExchangeInitializer {
 
     public static void initializeExchange(AbstractExchange exchange,Channel channel) throws IOException {
+        if(exchange == null || channel == null) return;
         ExchangeInitializer.initializeExchange(exchange.getType(),exchange.getName(),exchange.isDurable(),exchange.isAutoDelete(),exchange.getArguments(),channel);
     }
 
-    public static AbstractExchange initializeExchange(String type, String name, Channel channel) throws IOException {
+    static AbstractExchange initializeExchange(String type, String name, Channel channel) throws IOException {
         return ExchangeInitializer.initializeExchange(type,name,false,false,channel);
     }
 
-    public static AbstractExchange initializeExchange(String type, String name, boolean durable, Channel channel) throws IOException {
+    static AbstractExchange initializeExchange(String type, String name, boolean durable, Channel channel) throws IOException {
         return ExchangeInitializer.initializeExchange(type,name,durable,false,channel);
     }
 
-    public static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Channel channel) throws IOException {
+    private static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Channel channel) throws IOException {
         return ExchangeInitializer.initializeExchange(type,name,durable,autoDelete,null,channel);
     }
 
-    public static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Map<String, Object> arguments, Channel channel) throws IOException {
+    private static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Map<String, Object> arguments, Channel channel) throws IOException {
         switch(type){
             case ExchangeTypes.DIRECT:
                 channel.exchangeDeclare(name,ExchangeTypes.DIRECT,durable,autoDelete,arguments);
