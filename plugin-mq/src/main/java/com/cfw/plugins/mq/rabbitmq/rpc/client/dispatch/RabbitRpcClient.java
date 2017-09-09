@@ -12,12 +12,8 @@ import java.util.UUID;
  */
 class RabbitRpcClient {
 
-    public static Object callRemoteProcedure(String service, String method,  List<Object> data, RoutingSender routingSender) throws Exception {
-        RemoteProcedureRequest request = new RemoteProcedureRequest();
-        request.setService(service);
-        request.setMethod(method);
-        request.setData(data);
-        request.setRequetId(UUID.randomUUID().toString());
+    static Object callRemoteProcedure(String service, String method,  List<Object> data, RoutingSender routingSender) throws Exception {
+        RemoteProcedureRequest request = constructRequest(service, method, data);
 
         RemoteProcedureResponse response = (RemoteProcedureResponse) routingSender.callRemoteProcedure(request);
 
@@ -28,12 +24,8 @@ class RabbitRpcClient {
 
     }
 
-    public static  <T> T callRemoteProcedure(String service, String method,  List<Object> data,T clazz,RoutingSender routingSender) throws Exception {
-        RemoteProcedureRequest request = new RemoteProcedureRequest();
-        request.setService(service);
-        request.setMethod(method);
-        request.setData(data);
-        request.setRequetId(UUID.randomUUID().toString());
+    static  <T> T callRemoteProcedure(String service, String method,  List<Object> data,Class<T> clazz,RoutingSender routingSender) throws Exception {
+        RemoteProcedureRequest request = constructRequest(service, method, data);
 
         RemoteProcedureResponse response = (RemoteProcedureResponse) routingSender.callRemoteProcedure(request);
 
@@ -42,6 +34,16 @@ class RabbitRpcClient {
 
         return (T)response.getResult();
 
+    }
+
+    private static RemoteProcedureRequest constructRequest(String service, String method, List<Object> data){
+        RemoteProcedureRequest request = new RemoteProcedureRequest();
+        request.setService(service);
+        request.setMethod(method);
+        request.setData(data);
+        request.setRequetId(UUID.randomUUID().toString());
+
+        return request;
     }
 
 }

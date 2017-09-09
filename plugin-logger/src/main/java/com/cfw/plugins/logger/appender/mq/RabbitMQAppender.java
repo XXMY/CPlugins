@@ -13,6 +13,8 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -26,7 +28,7 @@ public class RabbitMQAppender extends AbstractAppender {
 
     private static Sender sender;
 
-    private final static Lock lock = new ReentrantReadWriteLock().writeLock();
+    private static LinkedList<String> logMessage = new LinkedList<>();
 
     // For spring bean initialization.
     public RabbitMQAppender(){
@@ -66,20 +68,17 @@ public class RabbitMQAppender extends AbstractAppender {
      */
     @Override
     public void append(LogEvent event) {
-        if(sender == null)
+        String message = new String(getLayout().toByteArray(event));
+        if(sender == null){
+            logMessage.add(message);
             return;
-
-        lock.lock();
-        try{
-            String message = new String(getLayout().toByteArray(event));
-            sender.send(message);
-        }catch (Exception e){
-            if (!ignoreExceptions()) {
-                throw new AppenderLoggingException(e);
-            }
-        }finally {
-            lock.unlock();
         }
+
+        while(logMessage.size() !=0){
+            sender.send(logMessage.pollFirst());
+        }
+
+        sender.send(message);
     }
 
     @PluginFactory
