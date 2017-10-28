@@ -5,6 +5,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.*;
+import io.netty.util.CharsetUtil;
 
 public class HttpHandler extends ChannelInboundHandlerAdapter {
 
@@ -14,10 +15,18 @@ public class HttpHandler extends ChannelInboundHandlerAdapter {
             HttpRequest req = (HttpRequest) msg;
 
             System.out.println(req.uri());
+            System.out.println(req.method());
+
 
             if (HttpUtil.is100ContinueExpected(req)) {
                 ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.CONTINUE));
             }
+            if(req.method() == HttpMethod.POST){
+                FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
+                String content = fullHttpRequest.content().toString(CharsetUtil.UTF_8);
+                System.out.println(content);
+            }
+
             boolean keepAlive = HttpUtil.isKeepAlive(req);
             FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer("success".getBytes()));
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
