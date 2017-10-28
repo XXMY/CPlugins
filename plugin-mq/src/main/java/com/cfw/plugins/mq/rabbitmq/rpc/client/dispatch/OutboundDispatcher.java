@@ -8,6 +8,8 @@ import java.util.List;
 /**
  * Created by Duskrain on 2017/8/26.
  */
+// It is deprecated as going to use spring's AmqpProxyFactoryBean.
+@Deprecated
 public class OutboundDispatcher {
 
     public Object dispatch(String server, String service, String method, Object ... arguments) throws Exception {

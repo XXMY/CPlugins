@@ -10,6 +10,8 @@ import java.util.UUID;
 /**
  * Created by Duskrain on 2017/9/2.
  */
+// It is deprecated as going to use spring's AmqpProxyFactoryBean.
+@Deprecated
 class RabbitRpcClient {
 
     static Object callRemoteProcedure(String service, String method,  List<Object> data, RoutingSender routingSender) throws Exception {

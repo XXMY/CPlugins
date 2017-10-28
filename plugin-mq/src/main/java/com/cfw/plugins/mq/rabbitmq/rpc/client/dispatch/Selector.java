@@ -9,6 +9,8 @@ import java.util.Map;
 /**
  * Created by Duskrain on 2017/9/2.
  */
+// It is deprecated as going to use spring's AmqpProxyFactoryBean.
+@Deprecated
 public class Selector {
 
     private final static Map<String,RoutingSender> collection = new HashMap<>();

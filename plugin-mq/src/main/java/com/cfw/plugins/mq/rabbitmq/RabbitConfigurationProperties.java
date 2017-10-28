@@ -25,7 +25,7 @@ public class RabbitConfigurationProperties {
     private boolean rpcClient;
     private boolean rpcServer;
 
-    private String rpcMessageExpiration;
+    private String messageExpiration;
 
     public Map<String, Integer> getMqQueueThreadsNumber() {
         return mqQueueThreadsNumber;
@@ -83,11 +83,11 @@ public class RabbitConfigurationProperties {
         this.logQueueName = logQueueName;
     }
 
-    public String getRpcMessageExpiration() {
-        return rpcMessageExpiration;
+    public String getMessageExpiration() {
+        return messageExpiration;
     }
 
-    public void setRpcMessageExpiration(String rpcMessageExpiration) {
-        this.rpcMessageExpiration = rpcMessageExpiration;
+    public void setMessageExpiration(String messageExpiration) {
+        this.messageExpiration = messageExpiration;
     }
 }

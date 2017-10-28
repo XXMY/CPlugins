@@ -8,6 +8,8 @@ import java.util.Map;
 /**
  * Created by Duskrain on 2017/8/26.
  */
+// It is deprecated as going to use spring's AmqpInvokerServiceExporter.
+@Deprecated
 public class Selector {
 
     private final static Map<String,Object> collection = new HashMap<>();

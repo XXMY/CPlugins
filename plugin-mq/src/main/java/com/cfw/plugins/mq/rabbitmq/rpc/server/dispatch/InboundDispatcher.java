@@ -13,6 +13,8 @@ import java.util.Set;
 /**
  * Created by Duskrain on 2017/8/26.
  */
+// It is deprecated as going to use spring's AmqpInvokerServiceExporter.
+@Deprecated
 public class InboundDispatcher extends AbstractThread{
 
     private String queueName;

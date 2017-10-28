@@ -49,8 +49,8 @@ public class RabbitMQInitializer {
 
     public void initialize() throws IOException {
         initializeRabbitMQ();
-        initializeRpcServer();
-        initializeRpcClient();
+        //initializeRpcServer();
+        //initializeRpcClient();
     }
 
     private void initializeRabbitMQ(){

@@ -10,6 +10,8 @@ import java.lang.reflect.Method;
 /**
  * Created by Duskrain on 2017/8/27.
  */
+// It is deprecated as going to use spring's AmqpInvokerServiceExporter.
+@Deprecated
 public class RequestHandler {
 
     private RemoteProcedureRequest request;

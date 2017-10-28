@@ -1,10 +1,9 @@
 package com.cfw.plugins.mq.rabbitmq.rpc.server;
 
 import com.cfw.plugins.mq.rabbitmq.rpc.server.annotation.CRpcService;
-import com.cfw.plugins.mq.rabbitmq.rpc.server.dispatch.Selector ;
+import com.cfw.plugins.mq.rabbitmq.rpc.server.dispatch.Selector;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +11,9 @@ import java.util.Set;
 /**
  * Created by Duskrain on 2017/8/27.
  */
-@Component
+//@Component
+// It is deprecated as going to use spring's AmqpInvokerServiceExporter.
+@Deprecated
 public class ServiceExporter {
 
     @EventListener
