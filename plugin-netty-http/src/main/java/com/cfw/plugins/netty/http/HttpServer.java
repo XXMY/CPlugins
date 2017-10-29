@@ -10,6 +10,9 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Reference:
  * http://www.cnblogs.com/cyfonly/p/5616493.html
@@ -29,15 +32,16 @@ public class HttpServer {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup,workGroup)
                     .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG,100)
-                    .handler(new LoggingHandler(LogLevel.DEBUG))
+                    .option(ChannelOption.SO_BACKLOG,1024)
+                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new HttpServerCodec())
                                     .addLast(new HttpObjectAggregator(1048576))
-                                    .addLast(new HttpHandler());
+                                    .addLast(new HttpRequestDataParseHandler())
+                                    .addLast(new HttpRequestDispatchHandler());
                         }
                     });
 

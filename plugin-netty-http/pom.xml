@@ -29,6 +29,11 @@
             <artifactId>httpcore</artifactId>
             <version>4.4.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.39</version>
+        </dependency>
     </dependencies>
 
     <build>
