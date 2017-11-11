@@ -1,4 +1,4 @@
-package com.cfw.plugins.netty.http;
+package com.cfw.plugins.netty.http.request;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.AsciiHeadersEncoder;
@@ -60,7 +60,6 @@ public class HttpRequestData {
         sb.append(", method=").append(method);
         sb.append(", data=").append(data);
         sb.append(", contentType='").append(contentType).append('\'');
-        sb.append(", fullHttpRequest=").append(fullHttpRequest);
         sb.append('}');
         return sb.toString();
     }

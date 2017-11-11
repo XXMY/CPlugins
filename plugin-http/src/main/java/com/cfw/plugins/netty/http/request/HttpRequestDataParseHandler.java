@@ -1,4 +1,4 @@
-package com.cfw.plugins.netty.http;
+package com.cfw.plugins.netty.http.request;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;

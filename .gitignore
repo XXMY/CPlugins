@@ -1,3 +1,5 @@
 */target
 /.idea
 *.iml
+/rabbitmq-amqp-tutorials
+/test

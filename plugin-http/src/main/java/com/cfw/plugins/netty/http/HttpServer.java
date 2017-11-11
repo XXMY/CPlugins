@@ -1,5 +1,8 @@
 package com.cfw.plugins.netty.http;
 
+import com.cfw.plugins.netty.http.request.HttpRequestDataParseHandler;
+import com.cfw.plugins.netty.http.request.HttpRequestDispatchHandler;
+import com.cfw.plugins.netty.http.response.HttpResponseHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -9,9 +12,6 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Reference:
@@ -40,6 +40,7 @@ public class HttpServer {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new HttpServerCodec())
                                     .addLast(new HttpObjectAggregator(1048576))
+                                    .addLast(new HttpResponseHandler())
                                     .addLast(new HttpRequestDataParseHandler())
                                     .addLast(new HttpRequestDispatchHandler());
                         }
