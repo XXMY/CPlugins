@@ -1,8 +1,11 @@
 package com.cfw.plugins.netty.http.mapping;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class RequestPathExecutorMapping implements ExecutorMapping{
 
     private Map<String,MappedExecutor> executorMap;

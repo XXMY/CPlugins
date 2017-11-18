@@ -7,6 +7,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.AsciiString;
 
 public class HttpRequestData {
+    // use this to find executor.
     private String path;
     private HttpMethod method;
     private ByteBuf data;

@@ -3,7 +3,10 @@ package com.cfw.plugins.netty.http.response;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
+import org.springframework.stereotype.Component;
 
+@Component
+@ChannelHandler.Sharable
 public class HttpResponseHandler extends ChannelOutboundHandlerAdapter {
 
     /**
@@ -28,7 +31,10 @@ public class HttpResponseHandler extends ChannelOutboundHandlerAdapter {
         }
 
         boolean keepAlive = HttpUtil.isKeepAlive(responseData.getFullHttpRequest());
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer("success".getBytes()));
+        FullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1,
+                HttpResponseStatus.OK,
+                Unpooled.wrappedBuffer(responseData.getData().toString().getBytes()));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
 

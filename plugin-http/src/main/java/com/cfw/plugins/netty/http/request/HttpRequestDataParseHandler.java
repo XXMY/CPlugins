@@ -1,15 +1,15 @@
 package com.cfw.plugins.netty.http.request;
 
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandler;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import org.apache.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 
+@Component
+@ChannelHandler.Sharable
 public class HttpRequestDataParseHandler extends ChannelInboundHandlerAdapter{
 
     /**
