@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class DataConverter {
 
-    public static <T> T convert(String source, Class<T> destination){
+    public static Object convert(String source, Class destination){
         String simpleName = destination.getSimpleName();
 
         Object result = null;
@@ -24,6 +24,6 @@ public class DataConverter {
         else
             result = JSONObject.parseObject(source,destination);
 
-        return destination.cast(result);
+        return result;
     }
 }

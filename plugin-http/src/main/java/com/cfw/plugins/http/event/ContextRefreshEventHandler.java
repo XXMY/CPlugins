@@ -1,8 +1,23 @@
 package com.cfw.plugins.http.event;
 
 import com.cfw.plugins.http.annotation.RequestPath;
+import com.cfw.plugins.http.properties.ServerProperties;
 import com.cfw.plugins.netty.http.mapping.RequestPathExecutorMapping;
 import com.cfw.plugins.netty.http.mapping.RequestPathMappedExecutor;
+import com.cfw.plugins.netty.http.request.HttpRequestDataParseHandler;
+import com.cfw.plugins.netty.http.request.HttpRequestDispatchHandler;
+import com.cfw.plugins.netty.http.response.HttpResponseHandler;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -21,10 +36,13 @@ import java.util.Set;
 public class ContextRefreshEventHandler {
 
     private RequestPathExecutorMapping executorMapping;
+    private ServerProperties serverProperties;
+    private Logger logger = LoggerFactory.getLogger(ContextRefreshEventHandler.class);
 
     @Autowired
-    public ContextRefreshEventHandler(RequestPathExecutorMapping executorMapping){
+    public ContextRefreshEventHandler(RequestPathExecutorMapping executorMapping,ServerProperties serverProperties){
         this.executorMapping = executorMapping;
+        this.serverProperties = serverProperties;
     }
 
     /**
@@ -38,6 +56,7 @@ public class ContextRefreshEventHandler {
             return ;
 
         this.initRequestPathExecutorMapping(event.getApplicationContext());
+        this.startHttpContainer(event.getApplicationContext());
     }
 
     /**
@@ -78,12 +97,56 @@ public class ContextRefreshEventHandler {
                     }
 
                     RequestPathMappedExecutor executor = new RequestPathMappedExecutor(controller,method,parameterTypeMap,method.getReturnType());
+                    executor.setHttpMethod(methodRequestPath.method());
                     this.executorMapping.addExecutor(controllerRequestPath.value() + methodRequestPath.value(),executor);
                 }
             }
 
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * @param applicationContext
+     * @author CaiFangwei
+     * @since 2017-11-19 15:23:46
+     */
+    private void startHttpContainer(ApplicationContext applicationContext){
+        HttpResponseHandler httpResponseHandler = (HttpResponseHandler) applicationContext.getBean("httpResponseHandler");
+        HttpRequestDataParseHandler httpRequestDataParseHandler = (HttpRequestDataParseHandler) applicationContext.getBean("httpRequestDataParseHandler");
+        HttpRequestDispatchHandler httpRequestDispatchHandler = (HttpRequestDispatchHandler) applicationContext.getBean("httpRequestDispatchHandler");
+
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup,workGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG,1024)
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            ChannelPipeline pipeline = socketChannel.pipeline();
+                            pipeline.addLast(new HttpServerCodec())
+                                    .addLast(new HttpObjectAggregator(1048576))
+                                    .addLast(httpResponseHandler)
+                                    .addLast(httpRequestDataParseHandler)
+                                    .addLast(httpRequestDispatchHandler);
+                        }
+                    });
+
+            ChannelFuture channelFuture = serverBootstrap.bind(this.serverProperties.getPort()).sync();
+            this.logger.info("Netty Server startup succeed with port: {}", this.serverProperties.getPort());
+            channelFuture.channel().closeFuture().sync();
+        }catch(Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }finally {
+            bossGroup.shutdownGracefully();
+            workGroup.shutdownGracefully();
         }
     }
 }

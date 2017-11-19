@@ -6,6 +6,9 @@ import com.cfw.plugins.netty.http.response.HttpResponseData;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Dispatch request to executor.
@@ -14,6 +17,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 @ChannelHandler.Sharable
 public class HttpRequestDispatchHandler extends ChannelInboundHandlerAdapter {
+    private Logger logger = LoggerFactory.getLogger(HttpRequestDispatchHandler.class);
 
     private ExecutorMapping executorMapping;
 
@@ -29,19 +33,26 @@ public class HttpRequestDispatchHandler extends ChannelInboundHandlerAdapter {
         if (!(msg instanceof HttpRequestData))
             return ;
         HttpRequestData requestData = (HttpRequestData) msg;
-        System.out.println("*************************RequestData: " + requestData);
+        this.logger.info("RequestData: {}",requestData);
 
         HttpResponseData responseData = new HttpResponseData(requestData.getFullHttpRequest());
         MappedExecutor executor = this.executorMapping.getExecutor(requestData.getPath());
-        if(this.executorMapping == null || executor == null){
-            responseData.setData("Could not found correspond controller.");
+        this.logger.info("MappedExecutor: {}",executor);
+        if(this.executorMapping == null || executor == null || requestData.getMethod() != executor.getHttpMethod()){
+            responseData.setResponseStatus(HttpResponseStatus.METHOD_NOT_ALLOWED);
             ctx.write(responseData);
             return ;
         }
 
-        Object result = executor.execute(requestData);
-        if(result !=null)
+        try{
+            Object result = executor.execute(requestData);
             responseData.setData(result);
+            responseData.setResponseStatus(HttpResponseStatus.OK);
+        }catch (Exception e){
+            this.logger.error(e.getMessage(),e);
+            responseData.setData(e.getMessage());
+            responseData.setResponseStatus(HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        }
 
         ctx.write(responseData);
     }

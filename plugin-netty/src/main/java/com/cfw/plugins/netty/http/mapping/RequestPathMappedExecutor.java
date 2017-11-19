@@ -1,8 +1,8 @@
 package com.cfw.plugins.netty.http.mapping;
 
+import com.cfw.plugins.netty.http.HttpMethod;
 import com.cfw.plugins.netty.http.convert.DataConverter;
 import com.cfw.plugins.netty.http.request.HttpRequestData;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.internal.StringUtil;
 
 import java.lang.reflect.Method;
@@ -13,6 +13,7 @@ import java.util.Set;
 public class RequestPathMappedExecutor implements MappedExecutor{
     private Object controller;
     private Method method;
+    private HttpMethod httpMethod;
     // parameter name, parameter type
     private Map<String,Class> parameterTypeMap;
     private Class returnType;
@@ -21,6 +22,46 @@ public class RequestPathMappedExecutor implements MappedExecutor{
         this.controller = controller;
         this.method = method;
         this.parameterTypeMap = parameterTypeMap;
+        this.returnType = returnType;
+    }
+
+    public Object getController() {
+        return controller;
+    }
+
+    public void setController(Object controller) {
+        this.controller = controller;
+    }
+
+    public Method getMethod() {
+        return method;
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+
+    public HttpMethod getHttpMethod() {
+        return httpMethod;
+    }
+
+    public void setHttpMethod(HttpMethod httpMethod) {
+        this.httpMethod = httpMethod;
+    }
+
+    public Map<String, Class> getParameterTypeMap() {
+        return parameterTypeMap;
+    }
+
+    public void setParameterTypeMap(Map<String, Class> parameterTypeMap) {
+        this.parameterTypeMap = parameterTypeMap;
+    }
+
+    public Class getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Class returnType) {
         this.returnType = returnType;
     }
 

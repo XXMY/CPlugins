@@ -1,8 +1,8 @@
 package com.cfw.plugins.netty.http.request;
 
+import com.cfw.plugins.netty.http.HttpMethod;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpMethod;
 
 public class HttpRequestData {
     // use this to find executor.
@@ -30,6 +30,10 @@ public class HttpRequestData {
 
     public void setMethod(HttpMethod method) {
         this.method = method;
+    }
+
+    public void setMethod(io.netty.handler.codec.http.HttpMethod method){
+        this.method = HttpMethod.resolve(method.name());
     }
 
     public ByteBuf getData() {

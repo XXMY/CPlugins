@@ -46,8 +46,6 @@ public class HttpRequestDataParseHandler extends ChannelInboundHandlerAdapter{
                 requestData.setData(Unpooled.copiedBuffer(uriSplittedArray[1].getBytes()));
         }
 
-        System.out.println(requestData);
-
         return requestData;
     }
 

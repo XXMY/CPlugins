@@ -1,11 +1,16 @@
 package com.cfw.plugins.netty.http.response;
 
+import com.alibaba.fastjson.JSON;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ChannelHandler.Sharable
 public class HttpResponseHandler extends ChannelOutboundHandlerAdapter {
+
+    private Logger logger = LoggerFactory.getLogger(HttpResponseHandler.class);
 
     /**
      * Calls {@link ChannelHandlerContext#write(Object, ChannelPromise)} to forward
@@ -22,7 +27,7 @@ public class HttpResponseHandler extends ChannelOutboundHandlerAdapter {
         if(!(msg instanceof HttpResponseData))
             return ;
         HttpResponseData responseData = (HttpResponseData) msg;
-        System.out.println("********************HttpResponseHandler: " + responseData);
+        this.logger.info("ResponseData: {}", responseData);
 
         if (HttpUtil.is100ContinueExpected(responseData.getFullHttpRequest())) {
             ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.CONTINUE));
@@ -31,9 +36,10 @@ public class HttpResponseHandler extends ChannelOutboundHandlerAdapter {
         boolean keepAlive = HttpUtil.isKeepAlive(responseData.getFullHttpRequest());
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1,
-                HttpResponseStatus.OK,
-                Unpooled.wrappedBuffer(responseData.getData().toString().getBytes()));
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+                responseData.getResponseStatus(),
+                Unpooled.wrappedBuffer(JSON.toJSONString(responseData.getData()).getBytes()));
+
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
 
         if (!keepAlive) {
