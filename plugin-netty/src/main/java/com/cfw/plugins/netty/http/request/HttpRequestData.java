@@ -1,10 +1,8 @@
 package com.cfw.plugins.netty.http.request;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.AsciiHeadersEncoder;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.util.AsciiString;
 
 public class HttpRequestData {
     // use this to find executor.

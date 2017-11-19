@@ -1,8 +1,8 @@
 package com.cfw.plugins.netty.http;
 
-import com.cfw.plugins.netty.http.request.HttpRequestDataParseHandler;
 import com.cfw.plugins.netty.http.request.HttpRequestDispatchHandler;
 import com.cfw.plugins.netty.http.response.HttpResponseHandler;
+import com.cfw.plugins.netty.http.request.HttpRequestDataParseHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

@@ -1,6 +1,6 @@
-package com.cfw.plugins.netty.http.event;
+package com.cfw.plugins.http.event;
 
-import com.cfw.plugins.netty.http.annotation.RequestPath;
+import com.cfw.plugins.http.annotation.RequestPath;
 import com.cfw.plugins.netty.http.mapping.RequestPathExecutorMapping;
 import com.cfw.plugins.netty.http.mapping.RequestPathMappedExecutor;
 import org.springframework.beans.factory.annotation.Autowired;

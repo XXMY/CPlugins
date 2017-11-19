@@ -1,5 +1,6 @@
 package com.cfw.plugins.netty.http.mapping;
 
+import com.cfw.plugins.netty.http.convert.DataConverter;
 import com.cfw.plugins.netty.http.request.HttpRequestData;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.internal.StringUtil;
@@ -54,7 +55,7 @@ public class RequestPathMappedExecutor implements MappedExecutor{
             Set<String> parameterNameSet = this.parameterTypeMap.keySet();
             int i=0;
             for(String parameterName : parameterNameSet){
-                parameterObjects[i] = this.parameterTypeMap.get(parameterName).cast(parameterMap.get(parameterName));
+                parameterObjects[i] = DataConverter.convert(parameterMap.get(parameterName),this.parameterTypeMap.get(parameterName));
                 i ++;
             }
 

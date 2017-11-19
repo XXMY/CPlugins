@@ -1,4 +1,4 @@
-package com.cfw.plugins.netty.http.annotation;
+package com.cfw.plugins.http.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

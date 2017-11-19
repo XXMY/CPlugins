@@ -3,9 +3,7 @@ package com.cfw.plugins.netty.http.response;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
-import org.springframework.stereotype.Component;
 
-@Component
 @ChannelHandler.Sharable
 public class HttpResponseHandler extends ChannelOutboundHandlerAdapter {
 

@@ -6,9 +6,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import org.apache.http.HttpHeaders;
-import org.springframework.stereotype.Component;
 
-@Component
 @ChannelHandler.Sharable
 public class HttpRequestDataParseHandler extends ChannelInboundHandlerAdapter{
 

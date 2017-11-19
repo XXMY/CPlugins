@@ -1,4 +1,4 @@
-package com.cfw.test;
+package test;
 
 public class Service {
 
