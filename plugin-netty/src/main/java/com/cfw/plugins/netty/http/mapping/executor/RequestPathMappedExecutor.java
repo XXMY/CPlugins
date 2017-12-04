@@ -1,7 +1,8 @@
-package com.cfw.plugins.netty.http.mapping;
+package com.cfw.plugins.netty.http.mapping.executor;
 
 import com.cfw.plugins.netty.http.HttpMethod;
 import com.cfw.plugins.netty.http.convert.DataConverter;
+import com.cfw.plugins.netty.http.mapping.parameter.ParameterUtils;
 import com.cfw.plugins.netty.http.request.HttpRequestData;
 import io.netty.util.internal.StringUtil;
 
@@ -77,48 +78,24 @@ public class RequestPathMappedExecutor implements MappedExecutor{
     }
 
     @Override
-    public Object execute(Object ... parameters) throws Exception {
+    public Object handle(Object ... parameters) throws Exception {
         return method.invoke(this.controller,parameters);
     }
 
     @Override
-    public Object execute(HttpRequestData requestData) throws Exception {
+    public Object handle(HttpRequestData requestData) throws Exception {
         if(this.parameterTypeMap == null || this.parameterTypeMap.size() == 0)
             return this.method.invoke(this.controller);
 
-        if(requestData.getMethod() == HttpMethod.GET){
-            byte parameterBytes [] = new byte[requestData.getData().readableBytes()];
-            requestData.getData().readBytes(parameterBytes);
+        Object parameterObjects [] = new Object[0];
+        if(requestData.getMethod() == HttpMethod.GET || "formed data".equals(requestData.getContentType())){
+            parameterObjects = ParameterUtils.convertFormedData(requestData.getData(),this.parameterTypeMap);
 
-            // parameter name => parameter value
-            Map<String,String> parameterMap = this.getParametersInFormData(new String(parameterBytes));
-            Object parameterObjects [] = new Object[this.parameterTypeMap.size()];
-            Set<String> parameterNameSet = this.parameterTypeMap.keySet();
-            int i=0;
-            for(String parameterName : parameterNameSet){
-                parameterObjects[i] = DataConverter.convert(parameterMap.get(parameterName),this.parameterTypeMap.get(parameterName));
-                i ++;
-            }
-
-            return this.method.invoke(this.controller,parameterObjects);
-
-        }
-        return new Object();
-    }
-
-    private Map<String,String> getParametersInFormData(String originalData){
-        if(StringUtil.isNullOrEmpty(originalData))
-            return null;
-
-        Map<String,String> parameters = new HashMap<String,String>();
-        String keyValueArray [] = originalData.split("&");
-        for(String keyValue : keyValueArray){
-            if(!keyValue.contains("=")) continue;
-
-            String kv [] = keyValue.split("=");
-            parameters.put(kv[0],kv[1]);
+        }else if(requestData.getMethod() == HttpMethod.POST && "application/json".equals(requestData.getContentType())){
+            parameterObjects = ParameterUtils.convertApplicationJson(requestData.getData(),this.parameterTypeMap);
         }
 
-        return parameters;
+        return this.method.invoke(this.controller,parameterObjects);
+
     }
 }

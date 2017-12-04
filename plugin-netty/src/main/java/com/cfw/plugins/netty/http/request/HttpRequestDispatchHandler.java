@@ -1,7 +1,7 @@
 package com.cfw.plugins.netty.http.request;
 
 import com.cfw.plugins.netty.http.mapping.ExecutorMapping;
-import com.cfw.plugins.netty.http.mapping.MappedExecutor;
+import com.cfw.plugins.netty.http.mapping.executor.MappedExecutor;
 import com.cfw.plugins.netty.http.response.HttpResponseData;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -45,7 +45,7 @@ public class HttpRequestDispatchHandler extends ChannelInboundHandlerAdapter {
         }
 
         try{
-            Object result = executor.execute(requestData);
+            Object result = executor.handle(requestData);
             responseData.setData(result);
             responseData.setResponseStatus(HttpResponseStatus.OK);
         }catch (Exception e){

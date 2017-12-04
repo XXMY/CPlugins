@@ -1,5 +1,7 @@
 package com.cfw.plugins.netty.http.mapping;
 
+import com.cfw.plugins.netty.http.mapping.executor.MappedExecutor;
+
 import java.util.HashMap;
 import java.util.Map;
 

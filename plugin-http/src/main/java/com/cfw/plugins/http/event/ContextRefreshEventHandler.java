@@ -3,7 +3,7 @@ package com.cfw.plugins.http.event;
 import com.cfw.plugins.http.annotation.RequestPath;
 import com.cfw.plugins.http.properties.ServerProperties;
 import com.cfw.plugins.netty.http.mapping.RequestPathExecutorMapping;
-import com.cfw.plugins.netty.http.mapping.RequestPathMappedExecutor;
+import com.cfw.plugins.netty.http.mapping.executor.RequestPathMappedExecutor;
 import com.cfw.plugins.netty.http.request.HttpRequestDataParseHandler;
 import com.cfw.plugins.netty.http.request.HttpRequestDispatchHandler;
 import com.cfw.plugins.netty.http.response.HttpResponseHandler;
