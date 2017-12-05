@@ -11,16 +11,17 @@ import java.util.Map;
  */
 public class ParameterUtils {
 
-    private static final FormedDataConverter formdDataConstructor = new FormedDataConverter();
+    private static final FormedDataConverter formedDataConstructor = new FormedDataConverter();
+    private static final ApplicationJsonConverter applicationJsonConverter = new ApplicationJsonConverter();
 
     public static Object[] convertFormedData(ByteBuf httpBody, Map<String,Class> parameterType){
 
-        return formdDataConstructor.convert(httpBody,parameterType);
+        return formedDataConstructor.convert(httpBody,parameterType);
     }
 
     public static Object[] convertApplicationJson(ByteBuf httpBody, Map<String,Class> parameterType){
 
-        return formdDataConstructor.convert(httpBody,parameterType);
+        return applicationJsonConverter.convert(httpBody,parameterType);
     }
 
 }

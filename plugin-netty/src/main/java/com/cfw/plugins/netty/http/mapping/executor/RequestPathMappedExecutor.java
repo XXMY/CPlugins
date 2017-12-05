@@ -88,7 +88,7 @@ public class RequestPathMappedExecutor implements MappedExecutor{
             return this.method.invoke(this.controller);
 
         Object parameterObjects [] = new Object[0];
-        if(requestData.getMethod() == HttpMethod.GET || "formed data".equals(requestData.getContentType())){
+        if(requestData.getMethod() == HttpMethod.GET || "application/x-www-form-urlencoded".equals(requestData.getContentType())){
             parameterObjects = ParameterUtils.convertFormedData(requestData.getData(),this.parameterTypeMap);
 
         }else if(requestData.getMethod() == HttpMethod.POST && "application/json".equals(requestData.getContentType())){

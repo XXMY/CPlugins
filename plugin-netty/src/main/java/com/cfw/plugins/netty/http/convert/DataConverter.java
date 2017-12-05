@@ -1,17 +1,28 @@
 package com.cfw.plugins.netty.http.convert;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * @author CaiFangwei
  * @since 2017年11月18日 22点11分
  */
 public class DataConverter {
+    private static Logger logger = LoggerFactory.getLogger(DataConverter.class);
 
-    public static Object convert(String source, Class destination){
+    public static Object convert(String source, Class destination) {
         String simpleName = destination.getSimpleName();
 
         Object result = null;
+        try {
+            source = URLDecoder.decode(source,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage(),e);
+        }
 
         if("String".equals(simpleName))
             result = source;

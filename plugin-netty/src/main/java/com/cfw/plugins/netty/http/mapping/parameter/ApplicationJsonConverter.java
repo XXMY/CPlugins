@@ -1,6 +1,7 @@
 package com.cfw.plugins.netty.http.mapping.parameter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cfw.plugins.netty.http.convert.DataConverter;
 import io.netty.buffer.ByteBuf;
@@ -39,7 +40,7 @@ public class ApplicationJsonConverter implements ParameterConverter {
         Set<String> parameterNameSet = parameterTypeMap.keySet();
         int i=0;
         for(String parameterName : parameterNameSet){
-            parameterObjects[i] = DataConverter.convert((String)jsonObject.get(parameterName),parameterTypeMap.get(parameterName));
+            parameterObjects[i] = DataConverter.convert(String.valueOf(jsonObject.get(parameterName)),parameterTypeMap.get(parameterName));
             i ++;
         }
 
