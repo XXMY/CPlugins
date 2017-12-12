@@ -9,10 +9,22 @@ import java.net.URLDecoder;
 public class Main {
 
     public static void main(String [] args) throws Exception {
-        String source = "{\"age\":20,\"gender\":true,\"name\":\"Kitty\"}";
+        /*String source = "{\"age\":20,\"gender\":true,\"name\":\"Kitty\"}";
         //source = URLDecoder.decode(source,"UTF-8");
         System.out.println(source);
-        JSONArray.parseArray(source);
+        JSONArray.parseArray(source);*/
+
+        /*String userName = "21152,20837,30334,24230,65292,21152,20837,32593,29,25628,320364,3662034";
+        System.out.println(userName.length());
+        if(userName.length() > 64)
+            userName = userName.substring(0,64);
+
+        if(userName.length() - userName.lastIndexOf(",") <=5)
+            userName = userName.substring(0,userName.lastIndexOf(","));
+        System.out.println(userName);*/
+
+        for(int i=0;i<100;i++)
+            System.out.println((int) (Math.random() * 100 + 1));
     }
 
     static class Cat {

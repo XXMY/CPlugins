@@ -38,7 +38,15 @@ public class HttpRequestDispatchHandler extends ChannelInboundHandlerAdapter {
         HttpResponseData responseData = new HttpResponseData(requestData.getFullHttpRequest());
         MappedExecutor executor = this.executorMapping.getExecutor(requestData.getPath());
         this.logger.info("MappedExecutor: {}",executor);
-        if(this.executorMapping == null || executor == null || requestData.getMethod() != executor.getHttpMethod()){
+
+        // 400
+        if(this.executorMapping == null || executor == null){
+            responseData.setResponseStatus(HttpResponseStatus.BAD_REQUEST);
+            ctx.write(responseData);
+            return ;
+        }
+        // 405
+        if(requestData.getMethod() != executor.getHttpMethod()){
             responseData.setResponseStatus(HttpResponseStatus.METHOD_NOT_ALLOWED);
             ctx.write(responseData);
             return ;

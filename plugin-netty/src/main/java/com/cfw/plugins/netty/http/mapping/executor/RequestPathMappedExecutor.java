@@ -91,7 +91,7 @@ public class RequestPathMappedExecutor implements MappedExecutor{
         if(requestData.getMethod() == HttpMethod.GET || "application/x-www-form-urlencoded".equals(requestData.getContentType())){
             parameterObjects = ParameterUtils.convertFormedData(requestData.getData(),this.parameterTypeMap);
 
-        }else if(requestData.getMethod() == HttpMethod.POST && "application/json".equals(requestData.getContentType())){
+        }else if("application/json".equals(requestData.getContentType())){
             parameterObjects = ParameterUtils.convertApplicationJson(requestData.getData(),this.parameterTypeMap);
         }
 

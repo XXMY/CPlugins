@@ -35,12 +35,13 @@ public class HttpRequestDataParseHandler extends ChannelInboundHandlerAdapter{
         requestData.setContentType(request.headers().get(HttpHeaders.CONTENT_TYPE));
 
         String uri = request.uri();
-        if(HttpMethod.POST.equals(request.method())){
+        if(HttpMethod.POST.equals(request.method())
+                || HttpMethod.PUT.equals(request.method())
+                || HttpMethod.DELETE.equals(request.method())){
             requestData.setPath(uri);
             requestData.setData(request.content());
         }else if(HttpMethod.GET.equals(request.method())){
             String uriSplittedArray [] = uri.split("\\?");
-
             requestData.setPath(uriSplittedArray[0]);
             if(uriSplittedArray.length == 2)
                 requestData.setData(Unpooled.copiedBuffer(uriSplittedArray[1].getBytes()));
@@ -48,40 +49,4 @@ public class HttpRequestDataParseHandler extends ChannelInboundHandlerAdapter{
 
         return requestData;
     }
-
-/*
-    private Map<String,String> getParameters(String originalData,String contentType){
-        if(HttpHeaderValues.FORM_DATA.contentEqualsIgnoreCase(contentType)){
-            return this.getParametersInFormData(originalData);
-        }else if(HttpHeaderValues.APPLICATION_JSON.contentEqualsIgnoreCase(contentType)){
-            return this.getParametersInApplicationJson(originalData);
-        }
-
-        return null;
-    }
-
-    private Map<String,String> getParametersInFormData(String originalData){
-        if(StringUtil.isNullOrEmpty(originalData))
-            return null;
-
-        Map<String,String> parameters = new HashMap<String,String>();
-        String keyValueArray [] = originalData.split("&");
-        for(String keyValue : keyValueArray){
-            if(!keyValue.contains("=")) continue;
-
-            String kv [] = keyValue.split("=");
-            parameters.put(kv[0],kv[1]);
-        }
-
-        return parameters;
-    }
-
-    private Map<String,String> getParametersInApplicationJson(String originalData){
-        if(StringUtil.isNullOrEmpty(originalData))
-            return null;
-
-       JSONObject jsonObject = JSON.parseObject(originalData);
-    }
-*/
-
 }

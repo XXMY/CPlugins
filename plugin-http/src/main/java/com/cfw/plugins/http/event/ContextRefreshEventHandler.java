@@ -2,6 +2,7 @@ package com.cfw.plugins.http.event;
 
 import com.cfw.plugins.http.annotation.RequestPath;
 import com.cfw.plugins.http.properties.ServerProperties;
+import com.cfw.plugins.netty.http.HttpServer;
 import com.cfw.plugins.netty.http.mapping.RequestPathExecutorMapping;
 import com.cfw.plugins.netty.http.mapping.executor.RequestPathMappedExecutor;
 import com.cfw.plugins.netty.http.request.HttpRequestDataParseHandler;
@@ -118,35 +119,11 @@ public class ContextRefreshEventHandler {
         HttpRequestDataParseHandler httpRequestDataParseHandler = (HttpRequestDataParseHandler) applicationContext.getBean("httpRequestDataParseHandler");
         HttpRequestDispatchHandler httpRequestDispatchHandler = (HttpRequestDispatchHandler) applicationContext.getBean("httpRequestDispatchHandler");
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workGroup = new NioEventLoopGroup();
-        try {
-            ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(bossGroup,workGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG,1024)
-                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            ChannelPipeline pipeline = socketChannel.pipeline();
-                            pipeline.addLast(new HttpServerCodec())
-                                    .addLast(new HttpObjectAggregator(1048576))
-                                    .addLast(httpResponseHandler)
-                                    .addLast(httpRequestDataParseHandler)
-                                    .addLast(httpRequestDispatchHandler);
-                        }
-                    });
+        HttpServer httpServer = new HttpServer(this.serverProperties.getPort());
+        httpServer.setResponseHandler(httpResponseHandler);
+        httpServer.setDataParseHandler(httpRequestDataParseHandler);
+        httpServer.setDispatchHandler(httpRequestDispatchHandler);
 
-            ChannelFuture channelFuture = serverBootstrap.bind(this.serverProperties.getPort()).sync();
-            this.logger.info("Netty Server startup succeed with port: {}", this.serverProperties.getPort());
-            channelFuture.channel().closeFuture().sync();
-        }catch(Exception e){
-            e.printStackTrace();
-            System.exit(1);
-        }finally {
-            bossGroup.shutdownGracefully();
-            workGroup.shutdownGracefully();
-        }
+        httpServer.start();
     }
 }
