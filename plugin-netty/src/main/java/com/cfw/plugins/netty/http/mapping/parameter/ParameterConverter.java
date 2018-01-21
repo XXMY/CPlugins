@@ -20,6 +20,6 @@ public interface ParameterConverter {
      * @author CaiFangwei
      * @sine 2017年12月4日 10点14分
      */
-    Object [] convert(ByteBuf httpBody, Map<String,Class> parameterTypeMap);
+    Object [] convert(ByteBuf httpBody, Map<String, Class> parameterTypeMap);
 
 }
