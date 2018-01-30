@@ -2,8 +2,10 @@ package com.cfw.plugins.mq.rabbitmq;
 
 import com.cfw.plugins.mq.rabbitmq.binding.BindingInitializer;
 import com.cfw.plugins.mq.rabbitmq.binding.CBinding;
+import com.cfw.plugins.mq.rabbitmq.exchange.CExchange;
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeCollection;
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeInitializer;
+import com.cfw.plugins.mq.rabbitmq.queue.CQueue;
 import com.cfw.plugins.mq.rabbitmq.queue.QueueCollection;
 import com.cfw.plugins.mq.rabbitmq.queue.QueueInitializer;
 import com.cfw.plugins.mq.rabbitmq.rpc.client.dispatch.Selector;
@@ -17,6 +19,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -29,22 +32,34 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitMQInitializer {
 
+    // This field won't use as initializeRpcServer and initializeRpcClient are not going to use any more.
+    // commented by caifw at 2018-1-22 21:02:01
     private RabbitConfigurationProperties configurationProperties;
 
     private RabbitTemplate rabbitTemplate;
 
-    private List<RabbitProperties> rabbitPropertiesList;
+    private RabbitMQPropertiesMap rabbitMQPropertiesMap;
 
-    public RabbitMQInitializer(RabbitConfigurationProperties configurationProperties,RabbitTemplate rabbitTemplate, List<RabbitProperties> rabbitPropertiesList) throws IOException {
+    //Deprecated
+    /*
+    public RabbitMQInitializer(RabbitConfigurationProperties configurationProperties,RabbitTemplate rabbitTemplate, List<RabbitMQProperties> rabbitMQPropertiesList) throws IOException {
         this.configurationProperties = configurationProperties;
         this.rabbitTemplate = rabbitTemplate;
-        this.rabbitPropertiesList = rabbitPropertiesList;
+        this.rabbitMQPropertiesList = rabbitMQPropertiesList;
+
+        this.initialize();
+    }
+    */
+
+    public RabbitMQInitializer(RabbitTemplate rabbitTemplate, RabbitMQPropertiesMap rabbitMQPropertiesMap) throws IOException {
+        this.rabbitTemplate = rabbitTemplate;
+        this.rabbitMQPropertiesMap = rabbitMQPropertiesMap;
 
         this.initialize();
     }
 
-    public List<RabbitProperties> getRabbitPropertiesList() {
-        return rabbitPropertiesList;
+    public Map<String,RabbitMQProperties> getRabbitMQPropertiesMap() {
+        return rabbitMQPropertiesMap.getRabbitMQPropertiesMap();
     }
 
     public void initialize() throws IOException {
@@ -57,22 +72,23 @@ public class RabbitMQInitializer {
         Connection connection = rabbitTemplate.getConnectionFactory().createConnection();
         Channel channel = connection.createChannel(false);
         try{
-            for(RabbitProperties rabbitProperties : rabbitPropertiesList){
-                ExchangeInitializer.initializeExchange(rabbitProperties.getExchange(),channel);
-                ExchangeCollection.addExchange(rabbitProperties.getExchange());
+            for(RabbitMQProperties rabbitMQProperties : rabbitMQPropertiesMap.getRabbitMQPropertiesMap().values()){
+                CExchange cExchange = rabbitMQProperties.getExchange();
+                ExchangeInitializer.initializeExchange(cExchange,channel);
+                ExchangeCollection.addExchange(cExchange);
 
-                List<Queue> queues = rabbitProperties.getQueues();
-                for(Queue queue : queues){
+                List<CQueue> queues = rabbitMQProperties.getQueues();
+                for(CQueue queue : queues){
                     QueueInitializer.initializeQueue(queue,channel);
                     QueueCollection.addQueue(queue);
                 }
 
-                List<CBinding> cbindings = rabbitProperties.getBindings();
+                List<CBinding> cbindings = rabbitMQProperties.getBindings();
                 if(cbindings == null)
                     continue;
 
                 for(CBinding cbinding : cbindings){
-                    BindingInitializer.initializeBinding(cbinding.getBinding(),channel);
+                    BindingInitializer.initializeBinding(cbinding,channel);
                 }
             }
         }catch (Exception e ){
@@ -98,25 +114,18 @@ public class RabbitMQInitializer {
         if(!configurationProperties.isRpcClient())
             return ;
 
-        for(RabbitProperties rabbitProperties : rabbitPropertiesList){
-            if(!(rabbitProperties.getUsage() == RabbitProperties.Usage.RPC))
+        for(RabbitMQProperties rabbitMQProperties : rabbitMQPropertiesMap.getRabbitMQPropertiesMap().values()){
+            if(!(rabbitMQProperties.getUsage() == RabbitMQProperties.Usage.RPC))
                 continue;
 
-            for(CBinding cBinding : rabbitProperties.getBindings()){
-                String server = cBinding.getServer();
-                Binding binding = cBinding.getBinding();
+            for(CBinding cBinding : rabbitMQProperties.getBindings()){
+                //String server = cBinding.getServer();
+                //Binding binding = cBinding.getBinding();
 
-                RoutingSender routingSender = new RoutingSender(rabbitProperties.getExchange().getType(),rabbitProperties.getExchange().getName(),binding.getRoutingKey(),rabbitTemplate);
+                //RoutingSender routingSender = new RoutingSender(rabbitMQProperties.getExchange().getType(), rabbitMQProperties.getExchange().getName(),binding.getRoutingKey(),rabbitTemplate);
 
-                Selector.put(server,routingSender);
+                //Selector.put(server,routingSender);
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return "RabbitMQInitializer{" +
-                "rabbitPropertiesList=" + rabbitPropertiesList +
-                '}';
     }
 }

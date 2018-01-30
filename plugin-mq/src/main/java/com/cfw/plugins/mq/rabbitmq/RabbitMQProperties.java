@@ -1,42 +1,41 @@
 package com.cfw.plugins.mq.rabbitmq;
 
 import com.cfw.plugins.mq.rabbitmq.binding.CBinding;
-import org.springframework.amqp.core.AbstractExchange;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.Queue;
+import com.cfw.plugins.mq.rabbitmq.exchange.CExchange;
+import com.cfw.plugins.mq.rabbitmq.queue.CQueue;
 
 import java.util.List;
 
 /**
  * Created by Duskrain on 2017/8/28.
  */
-public class RabbitProperties {
+public class RabbitMQProperties {
 
     public enum Usage {
         LOG, RPC;
     }
 
-    private AbstractExchange exchange;
+    private CExchange exchange;
 
-    private List<Queue> queues;
+    private List<CQueue> queues;
 
     private List<CBinding> bindings;
 
     private Usage usage;
 
-    public AbstractExchange getExchange() {
+    public CExchange getExchange() {
         return exchange;
     }
 
-    public void setExchange(AbstractExchange exchange) {
+    public void setExchange(CExchange exchange) {
         this.exchange = exchange;
     }
 
-    public List<Queue> getQueues() {
+    public List<CQueue> getQueues() {
         return queues;
     }
 
-    public void setQueues(List<Queue> queues) {
+    public void setQueues(List<CQueue> queues) {
         this.queues = queues;
     }
 
@@ -54,15 +53,5 @@ public class RabbitProperties {
 
     public void setUsage(Usage usage) {
         this.usage = usage;
-    }
-
-    @Override
-    public String toString() {
-        return "RabbitProperties{" +
-                "exchange=" + exchange +
-                ", queues=" + queues +
-                ", bindings=" + bindings +
-                ", usage=" + usage +
-                '}';
     }
 }

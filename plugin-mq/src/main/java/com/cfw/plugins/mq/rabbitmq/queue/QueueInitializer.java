@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class QueueInitializer {
 
-    public static void initializeQueue(Queue queue, Channel channel) throws IOException {
+    public static void initializeQueue(CQueue queue, Channel channel) throws IOException {
         if(queue == null || channel == null)
             return ;
         channel.queueDeclare(queue.getName(),queue.isDurable(),queue.isExclusive(),queue.isAutoDelete(),queue.getArguments());

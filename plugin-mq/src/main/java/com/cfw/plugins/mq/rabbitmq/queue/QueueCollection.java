@@ -13,22 +13,22 @@ import java.util.Map;
  */
 public class QueueCollection {
 
-    private static Map<String,Queue> queues = new HashMap<>();
+    private static Map<String,CQueue> queues = new HashMap<>();
 
-    public static Queue getQueue(String queueName){
+    public static CQueue getQueue(String queueName){
         if(queues.containsKey(queueName))
             return queues.get(queueName);
 
         return null;
     }
 
-    public static void addQueue() {
+    /*public static void addQueue() {
         Queue queue = new AnonymousQueue();
 
         queues.put(queue.getName(),queue);
-    }
+    }*/
 
-    public static void addQueue(Queue queue){
+    public static void addQueue(CQueue queue){
         if(queue == null)
             return ;
         queues.put(queue.getName(),queue);

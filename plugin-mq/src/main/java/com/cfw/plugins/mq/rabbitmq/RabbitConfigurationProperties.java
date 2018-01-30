@@ -11,6 +11,7 @@ import java.util.Map;
  */
 @Component("rabbitConfigurationProperties")
 @ConfigurationProperties(prefix = "c.rabbitmq")
+@Deprecated
 public class RabbitConfigurationProperties {
 
     private String rabbitConfigurationXmlPath;

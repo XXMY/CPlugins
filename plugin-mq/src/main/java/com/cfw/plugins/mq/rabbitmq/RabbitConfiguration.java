@@ -8,5 +8,6 @@ import org.springframework.context.annotation.ImportResource;
  */
 @Configuration
 //@ImportResource(locations = {"file:${c.rabbitmq.xml.path}"})
+@Deprecated
 public class RabbitConfiguration {
 }

@@ -1,9 +1,9 @@
 package com.cfw.plugins.mq.rabbitmq;
 
+import com.cfw.plugins.mq.rabbitmq.exchange.CExchange;
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeCollection;
-import org.springframework.amqp.core.AbstractExchange;
+import com.cfw.plugins.mq.rabbitmq.queue.CQueue;
 import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.Queue;
 import org.springframework.util.StringUtils;
 
 /**
@@ -14,9 +14,9 @@ import org.springframework.util.StringUtils;
  */
 public abstract class RabbitBasic {
 
-    private Queue queue;
+    private CQueue queue;
 
-    private AbstractExchange exchange;
+    private CExchange exchange;
 
     private Binding binding;
 
@@ -36,19 +36,19 @@ public abstract class RabbitBasic {
 
     }
 
-    public Queue getQueue() {
+    public CQueue getQueue() {
         return queue;
     }
 
-    public void setQueue(Queue queue) {
+    public void setQueue(CQueue queue) {
         this.queue = queue;
     }
 
-    public AbstractExchange getExchange() {
+    public CExchange getExchange() {
         return exchange;
     }
 
-    public void setExchange(AbstractExchange exchange) {
+    public void setExchange(CExchange exchange) {
         this.exchange = exchange;
     }
 

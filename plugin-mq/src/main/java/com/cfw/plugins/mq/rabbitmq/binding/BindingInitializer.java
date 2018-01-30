@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class BindingInitializer {
 
-    public static void initializeBinding(Binding binding, Channel channel) throws IOException {
+    public static void initializeBinding(CBinding binding, Channel channel) throws IOException {
         if(binding == null || channel == null)
             return;
 
