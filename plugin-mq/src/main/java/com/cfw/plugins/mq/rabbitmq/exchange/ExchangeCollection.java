@@ -1,10 +1,5 @@
 package com.cfw.plugins.mq.rabbitmq.exchange;
 
-import com.rabbitmq.client.Channel;
-import org.springframework.amqp.core.AbstractExchange;
-import org.springframework.util.StringUtils;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,17 +33,4 @@ public class ExchangeCollection {
 
         exchangeMap.put(exchange.getName(),exchange);
     }
-
-    /*public static void addExchange(String exchangeType,String exchangeName, Channel channel) throws IOException {
-        if(StringUtils.isEmpty(exchangeType) || StringUtils.isEmpty(exchangeName))
-            return ;
-
-        Map<String,CExchange> exchangeMap = exchanges.get(exchangeType);
-        if(exchangeMap == null) {
-            exchangeMap = new HashMap<>();
-            exchanges.put(exchangeType,exchangeMap);
-        }
-
-        exchangeMap.put(exchangeName, ExchangeInitializer.initializeExchange(exchangeType,exchangeName,channel));
-    }*/
 }

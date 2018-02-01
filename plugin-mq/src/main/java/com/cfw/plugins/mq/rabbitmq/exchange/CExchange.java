@@ -1,5 +1,8 @@
 package com.cfw.plugins.mq.rabbitmq.exchange;
 
+import org.springframework.amqp.core.*;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,7 +15,9 @@ public class CExchange {
     private boolean durable;
     private boolean autoDelete;
     private boolean delayed;
-    private Map<String, Object> arguments;
+    private Map<String, Object> arguments = new HashMap<>();
+
+    private AbstractExchange exchage;
 
     public String getName() {
         return name;
@@ -60,5 +65,22 @@ public class CExchange {
 
     public void setArguments(Map<String, Object> arguments) {
         this.arguments = arguments;
+    }
+
+    public AbstractExchange getExchage() {
+        switch(this.type){
+            case ExchangeTypes.DIRECT:
+                return new DirectExchange(this.name,this.durable,this.autoDelete,this.arguments);
+            case ExchangeTypes.FANOUT:
+                return new FanoutExchange(this.name,this.durable,this.autoDelete,this.arguments);
+            case ExchangeTypes.HEADERS:
+                return new HeadersExchange(this.name,this.durable,this.autoDelete,this.arguments);
+            case ExchangeTypes.SYSTEM:
+                return null;
+            case ExchangeTypes.TOPIC:
+                return new TopicExchange(this.name,this.durable,this.autoDelete,this.arguments);
+            default:
+                return null;
+        }
     }
 }

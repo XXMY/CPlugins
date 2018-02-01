@@ -3,6 +3,7 @@ package com.cfw.plugins.logger;
 import com.cfw.plugins.logger.appender.mq.RabbitMQAppender;
 import com.cfw.plugins.mq.rabbitmq.RabbitMQInitializer;
 import com.cfw.plugins.mq.rabbitmq.RabbitMQProperties;
+import com.cfw.plugins.mq.rabbitmq.queue.CQueue;
 import com.cfw.plugins.mq.rabbitmq.send.QueueSender;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -23,7 +24,7 @@ public class Log4jConfiguration {
             if(rabbitMQProperties.getUsage() != RabbitMQProperties.Usage.LOG)
                 continue;
 
-            Queue queue = rabbitMQProperties.getQueues().get(0);
+            CQueue queue = rabbitMQProperties.getQueues().get(0);
             RabbitMQAppender.setSender(new QueueSender(queue.getName(),rabbitTemplate));
 
             break;

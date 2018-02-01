@@ -1,26 +1,22 @@
 package com.cfw.plugins.mq.rabbitmq.binding;
 
+import org.springframework.amqp.core.Binding;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Duskrain on 2017/9/2.
  */
-public class CBinding {
+public class CBinding{
 
     private String destination;
     private String exchange;
-    public enum DestinationType {
-        QUEUE,
-        EXCHANGE;
-
-        private DestinationType() {
-        }
-    }
-
-    private CBinding.DestinationType destinationType;
     private String routingKey;
+    private Map<String, Object> arguments = new HashMap<>();
+    private Binding.DestinationType destinationType;
 
-    private Map<String, Object> arguments;
+    private Binding binding;
 
     public String getDestination() {
         return destination;
@@ -46,19 +42,23 @@ public class CBinding {
         this.routingKey = routingKey;
     }
 
-    public DestinationType getDestinationType() {
-        return destinationType;
-    }
-
-    public void setDestinationType(DestinationType destinationType) {
-        this.destinationType = destinationType;
-    }
-
     public Map<String, Object> getArguments() {
         return arguments;
     }
 
     public void setArguments(Map<String, Object> arguments) {
         this.arguments = arguments;
+    }
+
+    public Binding.DestinationType getDestinationType() {
+        return destinationType;
+    }
+
+    public void setDestinationType(Binding.DestinationType destinationType) {
+        this.destinationType = destinationType;
+    }
+
+    public Binding getBinding() {
+        return new Binding(this.destination,this.destinationType,this.exchange,this.routingKey,this.getArguments());
     }
 }

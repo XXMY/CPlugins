@@ -1,10 +1,6 @@
 package com.cfw.plugins.mq.rabbitmq.rpc;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessagePostProcessor;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.remoting.client.AmqpProxyFactoryBean;
 import org.springframework.remoting.RemoteProxyFailureException;
 import org.springframework.remoting.support.RemoteInvocation;

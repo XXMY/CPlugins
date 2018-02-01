@@ -1,9 +1,9 @@
 package com.cfw.plugins.mq.rabbitmq;
 
+import com.cfw.plugins.mq.rabbitmq.binding.CBinding;
 import com.cfw.plugins.mq.rabbitmq.exchange.CExchange;
 import com.cfw.plugins.mq.rabbitmq.exchange.ExchangeCollection;
 import com.cfw.plugins.mq.rabbitmq.queue.CQueue;
-import org.springframework.amqp.core.Binding;
 import org.springframework.util.StringUtils;
 
 /**
@@ -18,7 +18,7 @@ public abstract class RabbitBasic {
 
     private CExchange exchange;
 
-    private Binding binding;
+    private CBinding binding;
 
     // One producer may only produce message through one certain routing key
     // and one consumer only consume message through one certain routing key.
@@ -52,11 +52,11 @@ public abstract class RabbitBasic {
         this.exchange = exchange;
     }
 
-    public Binding getBinding() {
+    public CBinding getBinding() {
         return binding;
     }
 
-    public void setBinding(Binding binding) {
+    public void setBinding(CBinding binding) {
         this.binding = binding;
     }
 

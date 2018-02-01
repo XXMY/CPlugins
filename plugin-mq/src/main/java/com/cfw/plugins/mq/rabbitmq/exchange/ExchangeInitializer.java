@@ -16,36 +16,36 @@ public class ExchangeInitializer {
         ExchangeInitializer.initializeExchange(exchange.getType(),exchange.getName(),exchange.isDurable(),exchange.isAutoDelete(),exchange.getArguments(),channel);
     }
 
-    static AbstractExchange initializeExchange(String type, String name, Channel channel) throws IOException {
-        return ExchangeInitializer.initializeExchange(type,name,false,false,channel);
+    static void initializeExchange(String type, String name, Channel channel) throws IOException {
+        ExchangeInitializer.initializeExchange(type,name,false,false,channel);
     }
 
-    static AbstractExchange initializeExchange(String type, String name, boolean durable, Channel channel) throws IOException {
-        return ExchangeInitializer.initializeExchange(type,name,durable,false,channel);
+    static void initializeExchange(String type, String name, boolean durable, Channel channel) throws IOException {
+        ExchangeInitializer.initializeExchange(type,name,durable,false,channel);
     }
 
-    private static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Channel channel) throws IOException {
-        return ExchangeInitializer.initializeExchange(type,name,durable,autoDelete,null,channel);
+    private static void initializeExchange(String type, String name, boolean durable, boolean autoDelete, Channel channel) throws IOException {
+        ExchangeInitializer.initializeExchange(type,name,durable,autoDelete,null,channel);
     }
 
-    private static AbstractExchange initializeExchange(String type, String name, boolean durable, boolean autoDelete, Map<String, Object> arguments, Channel channel) throws IOException {
+    private static void initializeExchange(String type, String name, boolean durable, boolean autoDelete, Map<String, Object> arguments, Channel channel) throws IOException {
         switch(type){
             case ExchangeTypes.DIRECT:
                 channel.exchangeDeclare(name,ExchangeTypes.DIRECT,durable,autoDelete,arguments);
-                return new DirectExchange(name,durable,autoDelete,arguments);
+                break;
             case ExchangeTypes.FANOUT:
                 channel.exchangeDeclare(name,ExchangeTypes.FANOUT,durable,autoDelete,arguments);
-                return new FanoutExchange(name,durable,autoDelete,arguments);
+                break;
             case ExchangeTypes.HEADERS:
                 channel.exchangeDeclare(name,ExchangeTypes.HEADERS,durable,autoDelete,arguments);
-                return new HeadersExchange(name,durable,autoDelete,arguments);
+                break;
             case ExchangeTypes.SYSTEM:
-                return null;
+                break;
             case ExchangeTypes.TOPIC:
                 channel.exchangeDeclare(name,ExchangeTypes.TOPIC,durable,autoDelete,arguments);
-                return new TopicExchange(name,durable,autoDelete,arguments);
+                break;
             default:
-                return null;
+                break;
         }
     }
 }

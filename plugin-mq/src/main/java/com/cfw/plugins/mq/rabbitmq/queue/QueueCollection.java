@@ -1,10 +1,5 @@
 package com.cfw.plugins.mq.rabbitmq.queue;
 
-import org.springframework.amqp.core.AnonymousQueue;
-import org.springframework.amqp.core.Queue;
-import org.springframework.util.StringUtils;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

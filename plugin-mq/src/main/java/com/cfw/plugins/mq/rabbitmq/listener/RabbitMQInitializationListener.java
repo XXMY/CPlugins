@@ -8,9 +8,7 @@ import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**

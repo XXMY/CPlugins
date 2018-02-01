@@ -1,11 +1,10 @@
 package com.cfw.plugins.mq.rabbitmq.receive;
 
 import com.cfw.plugins.mq.rabbitmq.RabbitBasic;
+import com.cfw.plugins.mq.rabbitmq.binding.CBinding;
+import com.cfw.plugins.mq.rabbitmq.queue.CQueue;
 import com.cfw.plugins.mq.rabbitmq.queue.QueueCollection;
-import org.springframework.amqp.core.AnonymousQueue;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Binding;
 import org.springframework.util.StringUtils;
 
 /**
@@ -26,19 +25,18 @@ public abstract class AbstractReceiver extends RabbitBasic implements Receiver{
     }
 
     private void initBinding(){
-        if(this.getExchange() instanceof FanoutExchange)
-            this.setBinding(
-                    BindingBuilder.bind(this.getQueue()).to((FanoutExchange) this.getExchange())
-            );
-
-        if(this.getExchange() instanceof DirectExchange)
-            ;
+        CBinding binding = new CBinding();
+        binding.setDestination(this.getQueue().getName());
+        binding.setDestinationType(Binding.DestinationType.EXCHANGE);
+        binding.setExchange(this.getExchange().getName());
+        binding.setRoutingKey(this.getRoutingKey());
+        binding.setArguments(null);
     }
 
     private void initQueue(String queueName){
         if(!StringUtils.isEmpty(queueName))
             this.setQueue(QueueCollection.getQueue(queueName));
         else
-            this.setQueue(new AnonymousQueue());
+            this.setQueue(new CQueue());
     }
 }

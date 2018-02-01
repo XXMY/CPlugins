@@ -14,4 +14,8 @@ public class RabbitMQPropertiesMap {
     public Map<String, RabbitMQProperties> getRabbitMQPropertiesMap() {
         return rabbitMQPropertiesMap;
     }
+
+    public void setRabbitMQPropertiesMap(Map<String, RabbitMQProperties> rabbitMQPropertiesMap) {
+        this.rabbitMQPropertiesMap = rabbitMQPropertiesMap;
+    }
 }

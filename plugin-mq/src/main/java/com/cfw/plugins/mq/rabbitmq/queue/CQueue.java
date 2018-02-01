@@ -1,5 +1,8 @@
 package com.cfw.plugins.mq.rabbitmq.queue;
 
+import org.springframework.amqp.core.Queue;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class CQueue {
@@ -7,8 +10,9 @@ public class CQueue {
     private boolean durable;
     private boolean exclusive;
     private boolean autoDelete;
-    private Map<String, Object> arguments;
+    private Map<String, Object> arguments = new HashMap<>();
 
+    private Queue queue;
 
     public String getName() {
         return name;
@@ -48,5 +52,9 @@ public class CQueue {
 
     public void setArguments(Map<String, Object> arguments) {
         this.arguments = arguments;
+    }
+
+    public Queue getQueue() {
+        return new Queue(this.name,this.durable,this.exclusive,this.autoDelete,this.arguments);
     }
 }
